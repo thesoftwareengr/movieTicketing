@@ -1,0 +1,71 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class Ticket {
+
+	private int ticketNum;
+	private static int referenceTicketNumber;
+	private LocalDate showingDate;
+	private LocalTime showingTime;
+	private String[] reservedSeats;
+	private double totalPrice;
+	private int cinemaNum;
+	private boolean isActive;
+
+	
+	public int getTicketNum() {
+		return ticketNum;
+	}
+	
+	public void setTicketNum(int ticketNum) {
+		this.ticketNum = ticketNum;
+	}
+	
+	public LocalDate getShowingDate() {
+		return showingDate;
+	}
+	
+	public void setShowingDate(LocalDate showingDate) {
+		this.showingDate = showingDate;
+	}
+	
+	public LocalTime getShowingTime() {
+		return showingTime;
+	}
+	
+	public void setShowingTime(LocalTime showingTime) {
+		this.showingTime = showingTime;
+	}
+	
+	public String[] getReservedSeats() {
+		return reservedSeats;
+	}
+	
+	public void setReservedSeats(String[] reservedSeats) {
+		this.reservedSeats = reservedSeats;
+	}
+	
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+	
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+	
+	public int getCinemaNum() {
+		return cinemaNum;
+	}
+	
+	public void setCinemaNum(int cinemaNum) {
+		this.cinemaNum = cinemaNum;
+	}
+	
+	public boolean isActive() {
+		return isActive;
+	}
+	
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+}
