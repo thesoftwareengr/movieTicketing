@@ -23,11 +23,17 @@ public class SeatLayout {
 		}
 	}
 	
+//<<<<<<< HEAD
 	public void reserve(String[] reservedSeats){
 		
 		
 		
 	}
+//=======
+////	public Ticket reserve(){
+////		
+////	}
+//>>>>>>> d6e83258cfa9e6b1fb5ef15267cda98f0c0ac371
 	
 	public void inputValidation(ArrayList<String>[] errors){
 		
