@@ -13,6 +13,8 @@ public class SeatLayout {
 	}
 
 	public void display(){
+		
+		System.out.println("        ********** SCREEN **********");
 		for (int i = 0; i < ROWS; i++) {	
 			for (int j = 0; j < COLS; j++) {
 				System.out.print("["+String.valueOf((char)(i + 'A'))+(j+1)+(seats[i][j]==true?"*":" ")+"]");
@@ -21,9 +23,11 @@ public class SeatLayout {
 		}
 	}
 	
-//	public Ticket reserve(){
-//		
-//	}
+	public void reserve(String[] reservedSeats){
+		
+		
+		
+	}
 	
 	public void inputValidation(ArrayList<String>[] errors){
 		
