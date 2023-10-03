@@ -7,20 +7,13 @@ public class Movie {
 	private double length;
 	private LocalDate showingDate;
 	private ArrayList<LocalTime> startTime;
-	
-	public Movie(String name, double length, LocalDate showingDate) {
-		this.name = name;
-		this.length = length;
-		this.showingDate = showingDate;
-		startTime = new ArrayList<LocalTime>();
-	private LocalTime[] startTime;
 	private Boolean isPremier;
-
-public Movie(String name, double length, LocalDate showingDate, LocalTime[] startTime, Boolean isPremier) {
+	
+	public Movie(String name, double length, LocalDate showingDate, Boolean isPremier) {
 		this.name = name;
 		this.length = length;
 		this.showingDate = showingDate;
-		this.startTime = startTime;
+		this.startTime = new ArrayList<LocalTime>();
 		this.isPremier = isPremier;
 	}
 
@@ -36,10 +29,6 @@ public Movie(String name, double length, LocalDate showingDate, LocalTime[] star
 		return showingDate;
 	}
 	
-	public LocalTime[] getStartTime() {
-		return startTime;
-	}
-	
 	public ArrayList<LocalTime> getStartTime() {
 		return startTime;
 	}
@@ -51,7 +40,7 @@ public Movie(String name, double length, LocalDate showingDate, LocalTime[] star
 	public void addStartingTime(LocalTime time) {
 		this.startTime.add(time);
 	}
-}
+	
 	public Boolean getIsPremier() {
 		return isPremier;
 	}
@@ -68,9 +57,6 @@ public Movie(String name, double length, LocalDate showingDate, LocalTime[] star
 		this.showingDate = showingDate;
 	}
 	
-	public void setStartTime(LocalTime[] startTime) {
-		this.startTime = startTime;
-	}
 	
 	public void setIsPremier(Boolean isPremier) {
 		this.isPremier = isPremier;

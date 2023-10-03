@@ -47,11 +47,11 @@ public class MovieReservationSystem {
 		        values[0] = values[0].substring(1, values[0].length()-1);
 		        values[1] = values[1].substring(1, values[1].length()-1);
 		        values[2] = values[2].substring(1, values[2].length()-1);
-//		        values[3] = values[3].substring(1, values[3].length()-1);
+		        values[3] = values[3].substring(1, values[3].length()-1);
 		        values[4] = values[4].substring(1, values[4].length()-1);
 		        values[5] = values[5].substring(1, values[5].length()-2);
-		        
-		        movieData= new Movie(values[4], Double.parseDouble(values[5]), LocalDate.parse(values[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		        		        
+		        movieData= new Movie(values[4], Double.parseDouble(values[5]), LocalDate.parse(values[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")), Boolean.valueOf(values[3]));
 		        
 		        for(; i< movies.size(); i++) {
 		        	if(movies.get(i).getName().equals(values[4])) {
