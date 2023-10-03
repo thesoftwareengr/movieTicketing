@@ -25,12 +25,22 @@ public class SeatLayout {
 //		
 //	}
 	
-	public void inputValidation(ArrayList<String>[] errors){
-		
+	public void inputValidation(ArrayList<String>[] errors, String seat, ArrayList<String> reservations, int numSeats){
+		if(seat.length()==2 && (seat.charAt(0)>= 'A' && seat.charAt(0) <= 'E') && (Integer.valueOf(seat.charAt(1)) > 0 && Integer.valueOf(seat.charAt(1)) <= 5))  {
+			System.out.println("vaid");
+			if(seats[(int) seat.charAt(0)][Integer.valueOf(seat.charAt(1))]) {
+				reservations.add(seat);
+				numSeats++;
+			}else {
+				errors[1].add(seat);
+			}
+		}else {
+			errors[0].add(seat);
+		}
 	}
 	
-	public void inputCorrection(ArrayList<String>[] errors, int index){
-		String selection=null;
+	public void inputCorrection(ArrayList<String>[] errors, int index, ArrayList<String> reservations, int numSeats){
+		String selection=null, correctSeat;
 		Scanner scan = new Scanner(System.in);
 		
 		for(String error: errors[index]) {
@@ -40,7 +50,9 @@ public class SeatLayout {
 				System.out.print("Correct or cancel: ");
 				selection = scan.nextLine();
 				if(selection.equalsIgnoreCase("correct")) {
-					
+					System.out.print("Enter the correct seat: ");
+					correctSeat=scan.nextLine();
+					inputValidation(errors, correctSeat, reservations, numSeats);
 					errors[index].remove(error);
 					break;
 				}else if(selection.equalsIgnoreCase("cancel")) {
