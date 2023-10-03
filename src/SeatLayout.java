@@ -1,22 +1,58 @@
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SeatLayout {
-	boolean seats;
+	final int ROWS = 5, COLS = 8;
+
+	boolean seats[][];
 	int availableSeats;
 	
+	public SeatLayout() {
+		this.availableSeats = 40;
+		seats = new boolean[ROWS][COLS];
+	}
+
 	public void display(){
-	
+		for (int i = 0; i < ROWS; i++) {			
+			for (int j = 0; j < COLS; j++) {
+				System.out.print("["+String.valueOf((char)(i + 'A'))+(j+1)+(seats[i][j]==true?"*":" ")+"]");
+			}
+			System.out.println();
+		}
 	}
 	
-	public Ticket reserve(){
+//	public Ticket reserve(){
+//		
+//	}
+	
+	public void inputValidation(ArrayList<String>[] errors){
 		
 	}
 	
-	public void inputValidation(){
+	public void inputCorrection(ArrayList<String>[] errors, int index){
+		String selection=null;
+		Scanner scan = new Scanner(System.in);
 		
-	}
-	
-	public void inputCorrection(){
-		
+		for(String error: errors[index]) {
+			System.out.println(error);
+			while(selection==null) {
+				System.out.println("Would you like to corrrect or cancel this seat?");
+				System.out.print("Correct or cancel: ");
+				selection = scan.nextLine();
+				if(selection.equalsIgnoreCase("correct")) {
+					
+					errors[index].remove(error);
+					break;
+				}else if(selection.equalsIgnoreCase("cancel")) {
+					System.out.println("---cancel transaction error message");
+					errors[index].remove(error);
+					break;
+				}else {
+					selection=null;
+				}
+			}
+		}
+		scan.close();
 	}
 	
 	public void cancel(){

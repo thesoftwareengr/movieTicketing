@@ -1,13 +1,20 @@
-import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Movie {
 	private String name;
 	private double length;
 	private LocalDate showingDate;
-	private Time[] startTime;
+	private ArrayList<LocalTime> startTime;
 	
-	
+	public Movie(String name, double length, LocalDate showingDate) {
+		this.name = name;
+		this.length = length;
+		this.showingDate = showingDate;
+		startTime = new ArrayList<LocalTime>();
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -32,14 +39,15 @@ public class Movie {
 		this.showingDate = showingDate;
 	}
 	
-	public Time[] getStartTime() {
+	public ArrayList<LocalTime> getStartTime() {
 		return startTime;
 	}
 	
-	public void setStartTime(Time[] startTime) {
+	public void setStartTime(ArrayList<LocalTime> startTime) {
 		this.startTime = startTime;
 	}
 	
-	
-	
+	public void addStartingTime(LocalTime time) {
+		this.startTime.add(time);
+	}
 }

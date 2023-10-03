@@ -4,14 +4,13 @@ public class Screening {
 	private Movie movieShowing;
 	private int cinemaNum;
 	private SeatLayout seatLayout;
-	private ArrayList<Tickets> soldTickets;
+	private ArrayList<Ticket> soldTickets;
 	
-	public Screening(Movie movieShowing, int cinemaNum, SeatLayout seatLayout, ArrayList<Tickets> soldTickets) {
-		super();
+	public Screening(Movie movieShowing, int cinemaNum) {
 		this.movieShowing = movieShowing;
 		this.cinemaNum = cinemaNum;
-		this.seatLayout = seatLayout;
-		this.soldTickets = soldTickets;
+		this.seatLayout = new SeatLayout();
+		this.soldTickets = new ArrayList<Ticket>();
 	}
 
 	public Movie getMovieShowing() {
@@ -38,11 +37,11 @@ public class Screening {
 		this.seatLayout = seatLayout;
 	}
 
-	public ArrayList<Tickets> getSoldTickets() {
+	public ArrayList<Ticket> getSoldTickets() {
 		return soldTickets;
 	}
 
-	public void setSoldTickets(ArrayList<Tickets> soldTickets) {
+	public void setSoldTickets(ArrayList<Ticket> soldTickets) {
 		this.soldTickets = soldTickets;
 	}
 }
