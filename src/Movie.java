@@ -16,6 +16,7 @@ public Movie(String name, double length, LocalDate showingDate, LocalTime[] star
 		this.isPremier = isPremier;
 	}
 
+	//Getters
 	public String getName() {
 		return name;
 	}
@@ -36,6 +37,7 @@ public Movie(String name, double length, LocalDate showingDate, LocalTime[] star
 		return isPremier;
 	}
 	
+	//Setters
 	public void setName(String name) {
 		this.name = name;
 	}
