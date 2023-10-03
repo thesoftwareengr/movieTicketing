@@ -7,9 +7,9 @@ public class SeatLayout {
 	
 	}
 	
-	public Ticket reserve(){
-		
-	}
+//	public Ticket reserve(){
+//		
+//	}
 	
 	public void inputValidation(){
 		

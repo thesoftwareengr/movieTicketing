@@ -4,9 +4,9 @@ public class Screening {
 	private Movie movieShowing;
 	private int cinemaNum;
 	private SeatLayout seatLayout;
-	private ArrayList<Tickets> soldTickets;
+	private ArrayList<Ticket> soldTickets;
 	
-	public Screening(Movie movieShowing, int cinemaNum, SeatLayout seatLayout, ArrayList<Tickets> soldTickets) {
+	public Screening(Movie movieShowing, int cinemaNum, SeatLayout seatLayout, ArrayList<Ticket> soldTickets) {
 		super();
 		this.movieShowing = movieShowing;
 		this.cinemaNum = cinemaNum;
@@ -38,11 +38,11 @@ public class Screening {
 		this.seatLayout = seatLayout;
 	}
 
-	public ArrayList<Tickets> getSoldTickets() {
+	public ArrayList<Ticket> getSoldTickets() {
 		return soldTickets;
 	}
 
-	public void setSoldTickets(ArrayList<Tickets> soldTickets) {
+	public void setSoldTickets(ArrayList<Ticket> soldTickets) {
 		this.soldTickets = soldTickets;
 	}
 }
