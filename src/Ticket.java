@@ -2,9 +2,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Ticket {
+	private static int referenceTicketNumber=0;
 
 	private int ticketNum;
-	private static int referenceTicketNumber;
 	private LocalDate showingDate;
 	private LocalTime showingTime;
 	private String[] reservedSeats;
@@ -68,4 +68,11 @@ public class Ticket {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+	@Override
+	public String toString() {
+		return ticketNum+"|"+this.showingDate.toString()+"|"+this.cinemaNum+"|"+this.showingTime.toString()+"|"+this.reservedSeats+"|"+this.totalPrice;
+	}
+	
+	
 }
