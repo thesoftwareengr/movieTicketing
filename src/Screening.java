@@ -6,12 +6,11 @@ public class Screening {
 	private SeatLayout seatLayout;
 	private ArrayList<Ticket> soldTickets;
 	
-	public Screening(Movie movieShowing, int cinemaNum, SeatLayout seatLayout, ArrayList<Ticket> soldTickets) {
-		super();
+	public Screening(Movie movieShowing, int cinemaNum) {
 		this.movieShowing = movieShowing;
 		this.cinemaNum = cinemaNum;
-		this.seatLayout = seatLayout;
-		this.soldTickets = soldTickets;
+		this.seatLayout = new SeatLayout();
+		this.soldTickets = new ArrayList<Ticket>();
 	}
 
 	public Movie getMovieShowing() {

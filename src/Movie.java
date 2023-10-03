@@ -1,10 +1,18 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Movie {
 	private String name;
 	private double length;
 	private LocalDate showingDate;
+	private ArrayList<LocalTime> startTime;
+	
+	public Movie(String name, double length, LocalDate showingDate) {
+		this.name = name;
+		this.length = length;
+		this.showingDate = showingDate;
+		startTime = new ArrayList<LocalTime>();
 	private LocalTime[] startTime;
 	private Boolean isPremier;
 
@@ -32,6 +40,18 @@ public Movie(String name, double length, LocalDate showingDate, LocalTime[] star
 		return startTime;
 	}
 	
+	public ArrayList<LocalTime> getStartTime() {
+		return startTime;
+	}
+	
+	public void setStartTime(ArrayList<LocalTime> startTime) {
+		this.startTime = startTime;
+	}
+	
+	public void addStartingTime(LocalTime time) {
+		this.startTime.add(time);
+	}
+}
 	public Boolean getIsPremier() {
 		return isPremier;
 	}
