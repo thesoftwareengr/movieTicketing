@@ -74,5 +74,4 @@ public class Ticket {
 		return ticketNum+"|"+this.showingDate.toString()+"|"+this.cinemaNum+"|"+this.showingTime.toString()+"|"+this.reservedSeats+"|"+this.totalPrice;
 	}
 	
-	
 }
