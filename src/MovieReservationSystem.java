@@ -63,9 +63,11 @@ public class MovieReservationSystem {
 		        if(i==movies.size()) { //empty or new movie
 		        	movies.add(movieData);
 		        }
-		        movies.get(i).addStartingTime(LocalTime.parse(values[2], DateTimeFormatter.ofPattern("HH:mm")));
 		        
-		        screeningData = new Screening(movies.get(i), Integer.valueOf((values[1])));
+		        LocalTime startTime = LocalTime.parse(values[2], DateTimeFormatter.ofPattern("HH:mm"));
+		        movies.get(i).addStartingTime(startTime);
+		        
+		        screeningData = new Screening(movies.get(i), Integer.valueOf((values[1])), startTime);
 		        Set<String> keys = screenings.keySet();
 		        for(String key: keys) {
 		        	if(screenings.get(key).getCinemaNum()==Integer.valueOf(values[1])) {
