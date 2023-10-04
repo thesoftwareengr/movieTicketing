@@ -79,7 +79,7 @@ public class SeatLayout {
 			}else {
 				price = reservations.size()*500;
 			}
-			Ticket ticket = new Ticket(screening.getMovieShowing().getShowingDate(), screening.getStartTime(), (String[]) reservations.toArray(), price, screening.getCinemaNum());
+			Ticket ticket = new Ticket(screening.getMovieShowing().getShowingDate(), screening.getStartTime(), reservations, price, screening.getCinemaNum());
 			
 			
 			String confirm;
@@ -106,8 +106,6 @@ public class SeatLayout {
 		if(seat.length()==2 && (seat.charAt(0)>= 'A' && seat.charAt(0) <= 'H') && (((seat.charAt(1)) - '0') > 0 && (seat.charAt(1)-'0') <= 5))  {
 			if(!seats[(int) seat.charAt(0) -'A'][seat.charAt(1) - '0'-1]) {
 				reservations.add(seat);
-				// do not forget to add this back to the block where the tickets is to be generated
-				//seats[(int) seat.charAt(0) -'A'][seat.charAt(1) - '0'-1]=true;
 			}else {
 				System.out.println("inValid 1");
 				errors[1].add(seat);
@@ -147,7 +145,15 @@ public class SeatLayout {
 	}
 	
 	public void cancel(Ticket ticket){
-
+		if(!ticket.isActive()){
+			System.out.println("--------- ticket is already inactive");
+		}else {
+			for(String i:ticket.getReservedSeats()){
+				ticket.getReservedSeats().remove(i);
+				availableSeats++;
+			}
+			ticket.setActive(false);
+		}
 	}
 
 }

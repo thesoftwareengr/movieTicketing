@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Ticket {
 	private static int referenceTicketNumber=1;
@@ -7,12 +8,12 @@ public class Ticket {
 	private int ticketNum;
 	private LocalDate showingDate;
 	private LocalTime showingTime;
-	private String[] reservedSeats;
+	private ArrayList<String> reservedSeats;
 	private double totalPrice;
 	private int cinemaNum;
 	private boolean isActive;
 
-	public Ticket(LocalDate showingDate, LocalTime showingTime, String[] reservedSeats,
+	public Ticket(LocalDate showingDate, LocalTime showingTime, ArrayList<String> reservedSeats,
 			double totalPrice, int cinemaNum) {
 		this.ticketNum = referenceTicketNumber;
 		this.showingDate = showingDate;
@@ -48,14 +49,6 @@ public class Ticket {
 		this.showingTime = showingTime;
 	}
 	
-	public String[] getReservedSeats() {
-		return reservedSeats;
-	}
-	
-	public void setReservedSeats(String[] reservedSeats) {
-		this.reservedSeats = reservedSeats;
-	}
-	
 	public double getTotalPrice() {
 		return totalPrice;
 	}
@@ -64,6 +57,22 @@ public class Ticket {
 		this.totalPrice = totalPrice;
 	}
 	
+	public static int getReferenceTicketNumber() {
+		return referenceTicketNumber;
+	}
+
+	public static void setReferenceTicketNumber(int referenceTicketNumber) {
+		Ticket.referenceTicketNumber = referenceTicketNumber;
+	}
+
+	public ArrayList<String> getReservedSeats() {
+		return reservedSeats;
+	}
+
+	public void setReservedSeats(ArrayList<String> reservedSeats) {
+		this.reservedSeats = reservedSeats;
+	}
+
 	public int getCinemaNum() {
 		return cinemaNum;
 	}
