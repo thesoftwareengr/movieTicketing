@@ -55,4 +55,10 @@ public class Screening {
 	public void setSoldTickets(ArrayList<Ticket> soldTickets) {
 		this.soldTickets = soldTickets;
 	}
+	
+	public static LocalTime endTimeCalc(LocalTime startTime, double length) {
+		int lengthMinutes = (int) (length * 60);
+        LocalTime endTime = startTime.plusMinutes(lengthMinutes);
+        return endTime;
+	}
 }

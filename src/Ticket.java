@@ -6,23 +6,40 @@ public class Ticket {
 	private static int referenceTicketNumber=1;
 
 	private int ticketNum;
-	private LocalDate showingDate;
 	private LocalTime showingTime;
 	private ArrayList<String> reservedSeats;
 	private double totalPrice;
 	private int cinemaNum;
 	private boolean isActive;
+	private int seniors;
+	private Movie movie;
 
-	public Ticket(LocalDate showingDate, LocalTime showingTime, ArrayList<String> reservedSeats,
-			double totalPrice, int cinemaNum) {
+	public Ticket(Movie movie, LocalTime showingTime, ArrayList<String> reservedSeats, double totalPrice, int cinemaNum, int seniors) {
 		this.ticketNum = referenceTicketNumber;
-		this.showingDate = showingDate;
 		this.showingTime = showingTime;
 		this.reservedSeats = reservedSeats;
 		this.totalPrice = totalPrice;
 		this.cinemaNum = cinemaNum;
 		this.isActive = true;
+		this.seniors = seniors;
+		this.movie = movie;
 		referenceTicketNumber++;
+	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
+	public int getSeniors() {
+		return seniors;
+	}
+
+	public void setSeniors(int seniors) {
+		this.seniors = seniors;
 	}
 
 	public int getTicketNum() {
@@ -31,14 +48,6 @@ public class Ticket {
 	
 	public void setTicketNum(int ticketNum) {
 		this.ticketNum = ticketNum;
-	}
-	
-	public LocalDate getShowingDate() {
-		return showingDate;
-	}
-	
-	public void setShowingDate(LocalDate showingDate) {
-		this.showingDate = showingDate;
 	}
 	
 	public LocalTime getShowingTime() {
@@ -91,7 +100,21 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return ticketNum+"|"+this.showingDate.toString()+"|"+this.cinemaNum+"|"+this.showingTime.toString()+"|"+this.reservedSeats+"|"+this.totalPrice;
+		return ticketNum+"|"+this.getMovie().getShowingDate().toString()+"|"+this.cinemaNum+"|"+this.showingTime.toString()+"|"+this.reservedSeats+"|"+this.totalPrice;
 	}
 	
+	public void display() {
+		System.out.println("Ticket Receipt for "+this.getMovie().getName()+"@ "+this.getShowingTime()+" - "+Screening.endTimeCalc(getShowingTime(), getMovie().getLength())+"\nPremier: "+this.getMovie().getIsPremier()+"\nSeat Numbers:");
+		int snr = this.getSeniors();
+		int price=350;
+		for(String i: this.getReservedSeats()) {
+			if(snr>0) {
+				System.out.printf("%2s\t%350PHP\t%20%(70PHP)\t%280PHP", i);									
+			}else {
+				price=this.getMovie().getIsPremier()==true?500:350;
+					System.out.printf(i+"\t%dPHP\t          \t%dPHP", price,price);
+			}
+		}
+		System.out.printf("Total:                             %dPHP", this.getTotalPrice());
+	}
 }

@@ -79,8 +79,7 @@ public class SeatLayout {
 			}else {
 				price = reservations.size()*500;
 			}
-			Ticket ticket = new Ticket(screening.getMovieShowing().getShowingDate(), screening.getStartTime(), reservations, price, screening.getCinemaNum());
-			
+			Ticket ticket = new Ticket(screening.getMovieShowing(), screening.getStartTime(), reservations, price, screening.getCinemaNum(), seniors);
 			
 			String confirm;
 			while(true) {
@@ -107,11 +106,9 @@ public class SeatLayout {
 			if(!seats[(int) seat.charAt(0) -'A'][seat.charAt(1) - '0'-1]) {
 				reservations.add(seat);
 			}else {
-				System.out.println("inValid 1");
 				errors[1].add(seat);
 			}
 		}else {
-			System.out.println("inValid 0");
 			errors[0].add(seat);
 		}
 	}
@@ -122,12 +119,12 @@ public class SeatLayout {
 
 		for(String error: errors[index]) {
 			System.out.println(error);
-			while(selection==null) {
+			while(true) {
 				System.out.println("Would you like to corrrect or cancel this seat?");
-				System.out.print("Correct or cancel: ");
+				System.out.println("Correct or cancel: ");
 				selection = scan.nextLine();
 				if(selection.equalsIgnoreCase("correct")) {
-					System.out.print("Enter the correct seat: ");
+					System.out.println("Enter the correct seat: ");
 					correctSeat=scan.nextLine();
 					inputValidation(errors, correctSeat, reservations);
 					errors[index].remove(error);
@@ -136,8 +133,6 @@ public class SeatLayout {
 					System.out.println("---cancel transaction error message");
 					errors[index].remove(error);
 					break;
-				}else {
-					selection=null;
 				}
 			}
 		}
@@ -154,6 +149,22 @@ public class SeatLayout {
 			}
 			ticket.setActive(false);
 		}
+	}
+
+	public boolean[][] getSeats() {
+		return seats;
+	}
+
+	public void setSeats(boolean[][] seats) {
+		this.seats = seats;
+	}
+
+	public int getAvailableSeats() {
+		return availableSeats;
+	}
+
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
 	}
 
 }
