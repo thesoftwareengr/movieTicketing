@@ -79,8 +79,7 @@ public class SeatLayout {
 			}else {
 				price = reservations.size()*500;
 			}
-			Ticket ticket = new Ticket(screening.getMovieShowing().getShowingDate(), screening.getStartTime(), reservations, price, screening.getCinemaNum());
-			
+			Ticket ticket = new Ticket(screening.getMovieShowing(), screening.getStartTime(), reservations, price, screening.getCinemaNum(), seniors);
 			
 			String confirm;
 			while(true) {
