@@ -13,7 +13,7 @@ public class SeatLayout {
 
 	public void display(){
 
-		seats[0][0] = true;
+		
 		System.out.println("          ********** SCREEN **********\n");
 		for (int i = 0; i < ROWS; i++) {	
 			System.out.print((i==ROWS-1?"Exit |    ":"     |    "));
@@ -38,7 +38,7 @@ public class SeatLayout {
 			return null;
 		}else {
 			System.out.println("Please input seats to be reserved for this transaction:");
-			scan.nextLine();
+			
 			str = scan.nextLine();
 			String[] inputedStrings = str.split(",");
 			for(String inputs:inputedStrings) {

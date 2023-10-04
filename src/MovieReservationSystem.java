@@ -24,6 +24,7 @@ public class MovieReservationSystem {
 		Scanner scan = new Scanner(System.in);
 		boolean inf = true;
 		
+		
 		MovieReservationSystem mrs = new MovieReservationSystem();
 		mrs.readCSV();
 
@@ -48,54 +49,61 @@ public class MovieReservationSystem {
 
 				}
 				//startime wala pa
-				System.out.printf("%-2s   %-16s...\n", key, (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()));
+				System.out.printf("%-2s   %-15s...  %-15s\n", key, (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()),data.getStartTime());
 
 			}
 
 
-			while(true) {				
+			while(true) {		
 				System.out.println("\nPick a movie ID to view the seat layout: (QUIT to exit)");
 				String MovieID = scan.nextLine();
 	
 				if(MovieID.equalsIgnoreCase("QUIT")) {
 					inf=false;
 					break;
+				} else if(!inf) {
+					inf=true;
+					break;
 				}
 				if(mrs.screenings.containsKey(MovieID)) {
 					Screening selectedScreening = mrs.screenings.get(MovieID);
-					selectedScreening.getSeatLayout().reserve(selectedScreening);
+					
+					System.out.println("CINEMA " + MovieID.charAt(0));
+					System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - 	");
+					System.out.println("Premier: ???");
+					
+					selectedScreening.getSeatLayout().display();
+					int inputValue = 0;
+					do {
+						try {
+							System.out.println("\nLegend: [Xn ] = available seat, [Xn*] = reserved seat");
+							System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
+									+ "\n[1] - Reserve"
+									+ "\n[2] - Cancel Reservation"
+									+ "\n[3] - Exit");
+							inputValue = scan.nextInt();
+						}catch(Exception e){
+			
+						}
+					}while(inputValue < 1 || inputValue > 3) ;
+			
+					switch(inputValue) {
+					case 1:
+						selectedScreening.getSeatLayout().reserve(selectedScreening);
+						break;
+					case 2 :
+						break;
+						
+					case 3:
+						inf=false;
+						break;
+					}
+					
 				}
 			}
 		}
-		System.out.println("Exist");
-		//		SeatLayout seatLayout = new SeatLayout();
-		//		seatLayout.display();
-		//		System.out.println("\nLegend: [Xn ] = available seat, [Xn*] = reserved seat");
-		//
-		//		int inputValue = 0;
-		//		int seats;
-		//
-		//		String str;
-		//		
-		//		//Ticket ticket = new Ticket();		
-		//		// = new String[40];
-		//		do {
-		//			try {
-		//				System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
-		//						+ "\n[1] - Reserve"
-		//						+ "\n[2] - Cancel Reservation"
-		//						+ "\n[3] - Exit");
-		//				inputValue = scan.nextInt();
-		//			}catch(Exception e){
-		//
-		//			}
-		//		}while(inputValue < 1 || inputValue > 3) ;
-		//
-		//		switch(inputValue) {
-		//		case 1:
-		//			
+		System.out.println("                   ********** Application End **********");	
 
-		//		}
 	}
 
 	MovieReservationSystem(){
