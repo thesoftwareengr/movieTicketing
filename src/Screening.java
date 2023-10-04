@@ -1,3 +1,4 @@
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Screening {
@@ -5,12 +6,22 @@ public class Screening {
 	private int cinemaNum;
 	private SeatLayout seatLayout;
 	private ArrayList<Ticket> soldTickets;
+	private LocalTime startTime;
 	
-	public Screening(Movie movieShowing, int cinemaNum) {
+	public Screening(Movie movieShowing, int cinemaNum, LocalTime startTime) {
 		this.movieShowing = movieShowing;
 		this.cinemaNum = cinemaNum;
+		this.startTime = startTime;
 		this.seatLayout = new SeatLayout();
 		this.soldTickets = new ArrayList<Ticket>();
+	}
+
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
 	}
 
 	public Movie getMovieShowing() {

@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -84,7 +86,30 @@ public class MovieReservationSystem {
 	}
 	
 	public void generateReservationsCSV() {
-		
+//		https://blog.gitnux.com/code/java-csv-write/
+		String outputPath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"-reservations.csv";
+
+        try {
+            FileWriter fileWriter = new FileWriter(outputPath);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            //No header, just like sir Ryan's sample
+            
+            //Not sorted in ascending order but my organization in the HashMap
+            Set<String> keys = screenings.keySet();
+	        for(String key: keys) {
+	        	for(Ticket ticket: screenings.get(key).getSoldTickets()) {
+	        		bufferedWriter.write(ticket.toString());
+	                bufferedWriter.newLine();
+	        	}
+	        }
+            bufferedWriter.close();
+            System.out.println("CSV file created successfully.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error occurred while writing to the CSV file.");
+        }
 	}
 
 }
