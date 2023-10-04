@@ -156,4 +156,20 @@ public class SeatLayout {
 		}
 	}
 
+	public boolean[][] getSeats() {
+		return seats;
+	}
+
+	public void setSeats(boolean[][] seats) {
+		this.seats = seats;
+	}
+
+	public int getAvailableSeats() {
+		return availableSeats;
+	}
+
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
+	}
+
 }
