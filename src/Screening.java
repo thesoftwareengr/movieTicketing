@@ -57,8 +57,7 @@ public class Screening {
 	}
 	
 	public static LocalTime endTimeCalc(LocalTime startTime, double length) {
-		int lengthMinutes = (int) (length * 60);
-        LocalTime endTime = startTime.plusMinutes(lengthMinutes);
+        LocalTime endTime = startTime.plusMinutes((long) (length * 60));
         return endTime;
 	}
 }
