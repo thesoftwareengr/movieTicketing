@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.Set;
 
 public class MovieReservationSystem {
@@ -16,6 +17,48 @@ public class MovieReservationSystem {
 		MovieReservationSystem mrs = new MovieReservationSystem();
 		mrs.readCSV();
 		
+		SeatLayout seatLayout = new SeatLayout();
+		seatLayout.display();
+		System.out.println("\nLegend: [Xn ] = available seat, [Xn*] = reserved seat");
+
+		int inputValue = 0;
+		int seats;
+
+		String str;
+		Scanner scan = new Scanner(System.in);
+		//Ticket ticket = new Ticket();		
+		// = new String[40];
+		do {
+			try {
+				System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
+						+ "\n[1] - Reserve"
+						+ "\n[2] - Cancel Reservation"
+						+ "\n[3] - Exit");
+				inputValue = scan.nextInt();
+			}catch(Exception e){
+
+			}
+		}while(inputValue < 1 || inputValue > 3) ;
+
+		switch(inputValue) {
+		case 1:
+			System.out.println("Please input seats to be reserved for this transaction:");
+			scan.nextLine();
+			str = scan.nextLine();
+			String[] inputedStrings = str.split(",");
+			ArrayList<String>[] errors = new ArrayList[2];
+			ArrayList<String> reservations = new ArrayList<String>();
+			errors[0] = new ArrayList<String>();
+			errors[1] = new ArrayList<String>();
+			
+			for(String inputs : inputedStrings ) {
+				seatLayout.inputValidation(errors, inputs,reservations);
+			}
+			
+			System.out.println(errors[0].size() + " , " + errors[1].size() +" , "+reservations.size());
+			break;
+			
+		}
 	}
 	
 	MovieReservationSystem(){

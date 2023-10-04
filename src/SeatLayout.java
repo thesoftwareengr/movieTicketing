@@ -28,51 +28,14 @@ public class SeatLayout {
 
 	//return Ticket
 	public void reserve(){
-		this.display();
-		System.out.println("\nLegend: [Xn ] = available seat, [Xn*] = reserved seat");
-
-		int inputValue = 0;
-		int seats;
-
-		String str;
-		Scanner scan = new Scanner(System.in);
-		//Ticket ticket = new Ticket();		
-		// = new String[40];
-		do {
-			try {
-				System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
-						+ "\n[1] - Reserve"
-						+ "\n[2] - Cancel Reservation"
-						+ "\n[3] - Exit");
-				inputValue = scan.nextInt();
-			}catch(Exception e){
-
-			}
-		}while(inputValue < 1 || inputValue > 3) ;
-
-		switch(inputValue) {
-		case 1:
-			System.out.println("Please input seats to be reserved for this transaction:");
-			scan.nextLine();
-			str = scan.nextLine();
-			String[] inputedStrings = str.split(",");
-			ArrayList<String>[] errors = new ArrayList[2];
-			ArrayList<String> reservations = new ArrayList<String>();
-			errors[0] = new ArrayList<String>();
-			errors[1] = new ArrayList<String>();
-			String[] error2;
-			
-			for(String inputs : inputedStrings ) {
-				inputValidation(errors, inputs,reservations);
-			}
-			
-			System.out.println(errors[0].size() + " , " + errors[1].size() +" , "+reservations.size());
-		}
+		
 
 
 	}
 
 
+	
+	
 	public void inputValidation(ArrayList<String>[] errors, String seat, ArrayList<String> reservations){
 		if(seat.length()==2 && (seat.charAt(0)>= 'A' && seat.charAt(0) <= 'H') && (((seat.charAt(1)) - '0') > 0 && (seat.charAt(1)-'0') <= 5))  {
 			
