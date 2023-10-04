@@ -2,25 +2,29 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SeatLayout {
-	final int ROWS = 5, COLS = 8;
+	final int ROWS = 8, COLS = 5;
+	private boolean seats[][];
+	private int availableSeats;
 
-	boolean seats[][];
-	int availableSeats;
-	
 	public SeatLayout() {
 		this.availableSeats = 40;
 		seats = new boolean[ROWS][COLS];
 	}
 
 	public void display(){
-		for (int i = 0; i < ROWS; i++) {			
+
+		seats[0][0] = true;
+		System.out.println("          ********** SCREEN **********\n");
+		for (int i = 0; i < ROWS; i++) {	
+			System.out.print((i==ROWS-1?"Exit |    ":"     |    "));
 			for (int j = 0; j < COLS; j++) {
-				System.out.print("["+String.valueOf((char)(i + 'A'))+(j+1)+(seats[i][j]==true?"*":" ")+"]");
+				System.out.print("["+String.valueOf((char)(i + 'A'))+(j+1)+(seats[i][j]==true?"*":" ")+"] ");
 			}
 			System.out.println();
 		}
+
 	}
-	
+
 	public Ticket reserve(Screening screening){
 		Scanner scan = new Scanner(System.in);
 		String str;
@@ -105,9 +109,11 @@ public class SeatLayout {
 				// do not forget to add this back to the block where the tickets is to be generated
 				//seats[(int) seat.charAt(0) -'A'][seat.charAt(1) - '0'-1]=true;
 			}else {
+				System.out.println("inValid 1");
 				errors[1].add(seat);
 			}
 		}else {
+			System.out.println("inValid 0");
 			errors[0].add(seat);
 		}
 	}
@@ -115,7 +121,7 @@ public class SeatLayout {
 	public void inputCorrection(ArrayList<String>[] errors, int index, ArrayList<String> reservations){
 		String selection=null, correctSeat;
 		Scanner scan = new Scanner(System.in);
-		
+
 		for(String error: errors[index]) {
 			System.out.println(error);
 			while(selection==null) {
@@ -141,8 +147,7 @@ public class SeatLayout {
 	}
 	
 	public void cancel(Ticket ticket){
-		
+
 	}
-	
-	
+
 }
