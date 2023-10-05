@@ -45,18 +45,18 @@ public class MovieReservationSystem {
 				if(Character.getNumericValue(key.charAt(0)) != cinemaNumber) {
 					cinemaNumber = Character.getNumericValue(key.charAt(0));
 					System.out.println("CINEMA " + cinemaNumber);
-					System.out.println("ID        Movies              Time             Seats Available       Premiere");
+					System.out.println("ID        Movies              Time      Seats Available  Premiere");
 
 				}
 				//startime wala pa
-				System.out.printf("%-2s   %-15s...  %-15s\n", key, (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()),data.getStartTime());
+				System.out.printf("%-2s   %-15s...  %-5s - %-5s    %-12s      %-3s\n", key, (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()),data.getStartTime(), Screening.endTimeCalc(data.getStartTime(), data.getMovieShowing().getLength()),(data.getSeatLayout().getAvailableSeats()>0?"["+data.getSeatLayout().getAvailableSeats()+"] Seat(s)":"[00] Full"),(data.getMovieShowing().getIsPremier()? "Yes":"No"));
 
 			}
 
-
+			String MovieID;
 			while(true) {		
 				System.out.println("\nPick a movie ID to view the seat layout: (QUIT to exit)");
-				String MovieID = scan.nextLine();
+				 MovieID = scan.nextLine();
 	
 				if(MovieID.equalsIgnoreCase("QUIT")) {
 					inf=false;
@@ -70,7 +70,7 @@ public class MovieReservationSystem {
 					
 					System.out.println("CINEMA " + MovieID.charAt(0));
 					System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - 	");
-					System.out.println("Premier: ???");
+					System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
 					
 					selectedScreening.getSeatLayout().display();
 					int inputValue = 0;
