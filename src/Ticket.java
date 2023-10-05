@@ -111,9 +111,9 @@ public class Ticket {
 				System.out.printf("%2s\t%350PHP\t%20%(70PHP)\t%280PHP", i);									
 			}else {
 				price=this.getMovie().getIsPremier()==true?500:350;
-					System.out.printf(i+"\t%dPHP\t          \t%dPHP", price,price);
+					System.out.printf(i+"\t%dPHP\t          \t%dPHP\n", price,price);
 			}
 		}
-		System.out.printf("Total:                             %dPHP", this.getTotalPrice());
+		System.out.printf("Total:                             %dPHP", (int)this.getTotalPrice());
 	}
 }

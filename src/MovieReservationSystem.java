@@ -90,7 +90,8 @@ public class MovieReservationSystem {
 			
 					switch(inputValue) {
 					case 1:
-						selectedScreening.getSeatLayout().reserve(selectedScreening);
+						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
+						ticket.display();
 						break;
 					case 2 :
 						break;
