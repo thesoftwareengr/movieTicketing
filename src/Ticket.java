@@ -103,17 +103,18 @@ public class Ticket {
 	}
 	
 	public void display() {
-		System.out.println("Ticket Receipt for "+this.getMovie().getName()+"@ "+this.getShowingTime()+" - "+Screening.endTimeCalc(getShowingTime(), getMovie().getLength())+"\nPremier: "+this.getMovie().getIsPremier()+"\nSeat Numbers:");
+		System.out.println("\nTicket Receipt for "+this.getMovie().getName()+"@ "+this.getShowingTime()+" - "+Screening.endTimeCalc(getShowingTime(), getMovie().getLength())+"\nPremier: "+this.getMovie().getIsPremier()+"\nSeat Numbers:");
 		int snr = this.getSeniors();
 		int price=350;
 		for(String i: this.getReservedSeats()) {
 			if(snr>0) {
-				System.out.printf("%2s\t%350PHP\t%20%(70PHP)\t%280PHP", i);									
+				System.out.printf("%6s\t350PHP\t%10s\t 280PHP\n", i, "20%%(70PHP)");
+				snr--;
 			}else {
 				price=this.getMovie().getIsPremier()==true?500:350;
-					System.out.printf(i+"\t%dPHP\t          \t%dPHP\n", price,price);
+				System.out.printf("%6s\t%dPHP\t%10s\t%-6s\n",i, price,"          ",price+"PHP");
 			}
 		}
-		System.out.printf("Total:                             %dPHP", (int)this.getTotalPrice());
+		System.out.printf("Total:\t      \t          %-6\n", this.getTotalPrice()+"PHP");
 	}
 }

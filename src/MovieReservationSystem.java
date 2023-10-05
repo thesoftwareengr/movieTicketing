@@ -36,7 +36,7 @@ public class MovieReservationSystem {
 
 		while(inf==true){
 
-			System.out.println("                         ********** MAIN MENU **********");		
+			System.out.println("\n                         ********** MAIN MENU **********");		
 
 			int cinemaNumber = 0;
 			for (Map.Entry<String, Screening> entry : sortedEntries) {
@@ -91,7 +91,7 @@ public class MovieReservationSystem {
 					switch(inputValue) {
 					case 1:
 						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
-						ticket.display();
+						selectedScreening.getSoldTickets().add(ticket);
 						break;
 					case 2 :
 						break;
