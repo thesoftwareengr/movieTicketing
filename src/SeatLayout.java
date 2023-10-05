@@ -38,6 +38,7 @@ public class SeatLayout {
 			return null;
 		}else {
 			System.out.println("Please input seats to be reserved for this transaction:");
+			System.out.print("Input: ");
 			
 			str = scan.nextLine();
 			String[] inputedStrings = str.split(",");
@@ -83,7 +84,8 @@ public class SeatLayout {
 			
 			String confirm;
 			while(true) {
-				System.out.println("Confirm this ticket: ");				
+				System.out.println("Confirm this ticket: (Yes or No)");
+				System.out.print("Input: ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
 					scan.close();
@@ -94,6 +96,8 @@ public class SeatLayout {
 				for(String i: reservations) {
 					seats[(int) i.charAt(0) -'A'][i.charAt(1) - '0'-1]=true;
 				}
+				availableSeats-=reservations.size();
+				System.out.println("Ticket has been generated");
 				return ticket;
 			}
 			return null;
