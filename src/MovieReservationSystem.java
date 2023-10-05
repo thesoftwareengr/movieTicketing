@@ -46,16 +46,15 @@ public class MovieReservationSystem {
 					cinemaNumber = Character.getNumericValue(key.charAt(0));
 					System.out.println("CINEMA " + cinemaNumber);
 					System.out.println("ID        Movies              Time      Seats Available  Premiere");
-
 				}
-				//startime wala pa
 				System.out.printf("%-2s   %-15s...  %-5s - %-5s    %-12s      %-3s\n", key, (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()),data.getStartTime(), Screening.endTimeCalc(data.getStartTime(), data.getMovieShowing().getLength()),(data.getSeatLayout().getAvailableSeats()>0?"["+data.getSeatLayout().getAvailableSeats()+"] Seat(s)":"[00] Full"),(data.getMovieShowing().getIsPremier()? "Yes":"No"));
 
 			}
 
 			String MovieID;
-			while(true) {		
+			while(true) {
 				System.out.println("\nPick a movie ID to view the seat layout: (QUIT to exit)");
+				System.out.print("Input: ");
 				 MovieID = scan.nextLine();
 	
 				if(MovieID.equalsIgnoreCase("QUIT")) {
@@ -68,7 +67,7 @@ public class MovieReservationSystem {
 				if(mrs.screenings.containsKey(MovieID)) {
 					Screening selectedScreening = mrs.screenings.get(MovieID);
 					
-					System.out.println("CINEMA " + MovieID.charAt(0));
+					System.out.println("\nCINEMA " + MovieID.charAt(0));
 					System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - 	");
 					System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
 					
@@ -81,9 +80,11 @@ public class MovieReservationSystem {
 									+ "\n[1] - Reserve"
 									+ "\n[2] - Cancel Reservation"
 									+ "\n[3] - Exit");
+							System.out.print("Input: ");
 							inputValue = scan.nextInt();
+							scan.nextLine();
 						}catch(Exception e){
-			
+							
 						}
 					}while(inputValue < 1 || inputValue > 3) ;
 			
@@ -99,8 +100,7 @@ public class MovieReservationSystem {
 						inf=false;
 						break;
 					}
-					
-					
+					break;
 				}
 			}
 		}
@@ -134,12 +134,9 @@ public class MovieReservationSystem {
 //		        4 - title
 //		        5 - duration
 		        
-		        values[0] = values[0].substring(1, values[0].length()-1);
-		        values[1] = values[1].substring(1, values[1].length()-1);
-		        values[2] = values[2].substring(1, values[2].length()-1);
-		        values[3] = values[3].substring(1, values[3].length()-1);
-		        values[4] = values[4].substring(1, values[4].length()-1);
-		        values[5] = values[5].substring(1, values[5].length()-2);
+		        for(int ndx=0; ndx<values.length;ndx++) {
+		        	values[ndx] = values[ndx].substring(1, values[ndx].length()-1);
+		        }
 		        		        
 		        movieData= new Movie(values[4], Double.parseDouble(values[5]), LocalDate.parse(values[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")), Boolean.valueOf(values[3]));
 		        
@@ -168,52 +165,6 @@ public class MovieReservationSystem {
 		        	screenings.put(compositeKey, screeningData);
 		        }
 		    }
-			while ((line = br.readLine()) != null) {
-				i=0;
-				movieCtr=0;
-				values = line.split(",");
-
-				//		        CSV indexes
-				//		        0 - date
-				//		        1 - cinema num
-				//		        2 - start time
-				//		        3 - isPremiere
-				//		        4 - title
-				//		        5 - duration
-
-				values[0] = values[0].substring(1, values[0].length()-1);
-				values[1] = values[1].substring(1, values[1].length()-1);
-				values[2] = values[2].substring(1, values[2].length()-1);
-				values[3] = values[3].substring(1, values[3].length()-1);
-				values[4] = values[4].substring(1, values[4].length()-1);
-				values[5] = values[5].substring(1, values[5].length()-2);
-
-				movieData= new Movie(values[4], Double.parseDouble(values[5]), LocalDate.parse(values[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")), Boolean.valueOf(values[3]));
-
-				for(; i< movies.size(); i++) {
-					if(movies.get(i).getName().equals(values[4])) {
-						break;
-					}
-				}
-				if(i==movies.size()) { //empty or new movie
-					movies.add(movieData);
-				}
-				LocalTime startTime = LocalTime.parse(values[2], DateTimeFormatter.ofPattern("HH:mm"));
-				movies.get(i).addStartingTime(startTime);
-
-				screeningData = new Screening(movies.get(i), Integer.valueOf((values[1])), startTime);
-				Set<String> keys = screenings.keySet();
-				for(String key: keys) {
-					if(screenings.get(key).getCinemaNum()==Integer.valueOf(values[1])) {
-						movieCtr++;
-					}
-				}
-
-				compositeKey=values[1]+(char) ('A'+movieCtr);
-				if(!screenings.containsKey(compositeKey)) {
-					screenings.put(compositeKey, screeningData);
-				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
