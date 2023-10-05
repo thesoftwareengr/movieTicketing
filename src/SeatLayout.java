@@ -86,6 +86,10 @@ public class SeatLayout {
 			String confirm;
 			while(true) {
 				System.out.println("Confirm this ticket: (Yes or No)");
+				System.out.print(reservations.size()+" seats");
+				if(seniors>0) {
+					System.out.println(" with "+seniors+ "seniors");
+				}
 				System.out.print("Input: ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
