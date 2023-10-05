@@ -157,7 +157,9 @@ public class SeatLayout {
 		if(!ticket.isActive()){
 			System.out.println("--------- ticket is already inactive");
 		}else {
-			for(String i:ticket.getReservedSeats()){
+			Iterator<String> iterator = ticket.getReservedSeats().iterator();
+			while(iterator.hasNext()){
+				String i = iterator.next();
 				ticket.getReservedSeats().remove(i);
 				availableSeats++;
 			}
