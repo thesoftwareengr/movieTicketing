@@ -81,10 +81,9 @@ public class MovieReservationSystem {
 									+ "\n[2] - Cancel Reservation"
 									+ "\n[3] - Exit");
 							System.out.print("Input: ");
-							inputValue = scan.nextInt();
-							scan.nextLine();
+							inputValue = Integer.parseInt(scan.nextLine());
 						}catch(Exception e){
-							
+							inputValue = 0;
 						}
 					}while(inputValue < 1 || inputValue > 3) ;
 			

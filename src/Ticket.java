@@ -108,7 +108,7 @@ public class Ticket {
 		int price=350;
 		for(String i: this.getReservedSeats()) {
 			if(snr>0) {
-				System.out.printf("%2s\t%350PHP\t%20%(70PHP)\t%280PHP", i);									
+				System.out.printf("%2s\t350PHP\t20%(70PHP)\t280PHP", i);									
 			}else {
 				price=this.getMovie().getIsPremier()==true?500:350;
 					System.out.printf(i+"\t%dPHP\t          \t%dPHP\n", price,price);
