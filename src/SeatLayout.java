@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class SeatLayout {
@@ -34,7 +35,7 @@ public class SeatLayout {
 		errors[1] = new ArrayList<String>();
 		
 		if(this.availableSeats<=0) {
-			scan.close();
+			
 			return null;
 		}else {
 			System.out.println("Please input seats to be reserved for this transaction:");
@@ -56,7 +57,7 @@ public class SeatLayout {
 			if(reservations.size()<=0) {
 				//no seats were added
 				System.out.println("------- error message here");
-				scan.close();
+				//scan.close();
 				return null;	
 			}
 			int seniors=0;
@@ -88,7 +89,7 @@ public class SeatLayout {
 				System.out.print("Input: ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
-					scan.close();
+					//scan.close();
 					break;
 				}
 			}
@@ -97,7 +98,7 @@ public class SeatLayout {
 					seats[(int) i.charAt(0) -'A'][i.charAt(1) - '0'-1]=true;
 				}
 				availableSeats-=reservations.size();
-				System.out.println("Ticket has been generated");
+				ticket.display();
 				return ticket;
 			}
 			return null;
@@ -109,6 +110,7 @@ public class SeatLayout {
 		if(seat.length()==2 && (seat.charAt(0)>= 'A' && seat.charAt(0) <= 'H') && (((seat.charAt(1)) - '0') > 0 && (seat.charAt(1)-'0') <= 5))  {
 			if(!seats[(int) seat.charAt(0) -'A'][seat.charAt(1) - '0'-1]) {
 				reservations.add(seat);
+				System.out.println("A seat has been added successfully");
 			}else {
 				errors[1].add(seat);
 			}
@@ -118,14 +120,18 @@ public class SeatLayout {
 	}
 	
 	public void inputCorrection(ArrayList<String>[] errors, int index, ArrayList<String> reservations){
-		String selection=null, correctSeat;
+		String selection, correctSeat;
 		Scanner scan = new Scanner(System.in);
 
-		for(String error: errors[index]) {
+		Iterator<String> iterator = errors[index].iterator();
+        while (iterator.hasNext()) {
+        	selection=null;
+        	String error = iterator.next();
+        	
 			System.out.println(error);
 			while(true) {
-				System.out.println("Would you like to corrrect or cancel this seat?");
-				System.out.println("Correct or cancel: ");
+				System.out.println("\nWould you like to correct or cancel this seat? ("+error+")");
+				System.out.print("Input (Correct or cancel): ");
 				selection = scan.nextLine();
 				if(selection.equalsIgnoreCase("correct")) {
 					System.out.println("Enter the correct seat: ");
@@ -140,7 +146,7 @@ public class SeatLayout {
 				}
 			}
 		}
-		scan.close();
+		//scan.close();
 	}
 	
 	public void cancel(Ticket ticket){
