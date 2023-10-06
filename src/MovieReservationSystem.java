@@ -53,99 +53,120 @@ public class MovieReservationSystem {
 
 			int ticketID;
 			boolean returnCinema = false;
-			while(true) {
-				System.out.println("\nPick a movie ID to view the seat layout: (QUIT to exit)");
+			//while(true) {
+
+			do {
+				System.out.println("Pick a movie ID to view the seat layout: (QUIT to exit)");
 				System.out.print("Input: ");
 				MovieID = scan.nextLine();
 
-				if(MovieID.equalsIgnoreCase("QUIT")) {
+				if(mrs.screenings.containsKey(MovieID)) {
+					break;
+				}else if(MovieID.equalsIgnoreCase("QUIT")) {
 					inf=false;
 					break;
 				} else if(!inf) {
 					inf=true;
 					break;
-				} 
-				do {
-					if(mrs.screenings.containsKey(MovieID)) {
-						Screening selectedScreening = mrs.screenings.get(MovieID);
+				} else {
+					System.out.println("\n!!Invalid MovieID! Please Input a valid MovieID within the Cinemas!!");
+				}
+			}while(true);
 
-						System.out.println("\nCINEMA " + MovieID.charAt(0));
-						System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - 	");
-						System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
 
-						selectedScreening.getSeatLayout().display();
-						int inputValue = 0;
+
+
+
+			do {
+				//if(mrs.screenings.containsKey(MovieID)) {//wala gamit
+					Screening selectedScreening = mrs.screenings.get(MovieID);
+
+					System.out.println("\nCINEMA " + MovieID.charAt(0));
+					System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - " + Screening.endTimeCalc(selectedScreening.getStartTime(), selectedScreening.getMovieShowing().getLength()));
+					System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
+
+					selectedScreening.getSeatLayout().display();
+					System.out.println();
+					int inputValue = 0;
+					do {
+
+						try {
+							System.out.println("Legend: [Xn ] = available seat, [Xn*] = reserved seat");
+							System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
+									+ "\n[1] - Reserve"
+									+ "\n[2] - Cancel Reservation"
+									+ "\n[3] - Exit");
+							System.out.print("Input: ");
+							inputValue = Integer.parseInt(scan.nextLine());
+						}catch(Exception e){
+							inputValue = 0;
+						}
+						if(inputValue >= 1 && inputValue <= 3) {
+							break;
+						} else {
+							System.out.println("\nInvalid InputValue! Please Input a Valid Integer to Proceed");
+						}
+						
+						
+					}while(true);
+
+					switch(inputValue) {
+					case 1:
+						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
+						selectedScreening.getSoldTickets().add(ticket);
+
 						do {
 							try {
-								System.out.println("\nLegend: [Xn ] = available seat, [Xn*] = reserved seat");
-								System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
-										+ "\n[1] - Reserve"
-										+ "\n[2] - Cancel Reservation"
-										+ "\n[3] - Exit");
+								System.out.println("Please Input \"1\" or \"2\" to Proceed back to Cinema "+MovieID.charAt(0)+" or the Main Menu"
+										+ "\n[1] - CINEMA " + MovieID.charAt(0)
+										+ "\n[2] - Exit");
 								System.out.print("Input: ");
 								inputValue = Integer.parseInt(scan.nextLine());
 							}catch(Exception e){
 								inputValue = 0;
 							}
-						}while(inputValue < 1 || inputValue > 3) ;
+						}while(inputValue < 1 || inputValue > 2) ;
 
 						switch(inputValue) {
-						case 1:
-							Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
-							selectedScreening.getSoldTickets().add(ticket);
-
-							do {
-								try {
-									System.out.println("Please Input \"1\" or \"2\" to Proceed back to Cinema 1 or the Main Menu"
-											+ "\n[1] - CINEMA " + MovieID.charAt(0)
-											+ "\n[2] - Exit");
-									System.out.print("Input: ");
-									inputValue = Integer.parseInt(scan.nextLine());
-								}catch(Exception e){
-									inputValue = 0;
-								}
-							}while(inputValue < 1 || inputValue > 2) ;
-
-							switch(inputValue) {
-							case 1: 
-								returnCinema = true;
-								break;
-							case 2:
-								returnCinema = false;
-								break;
-							}
+						case 1: 
+							returnCinema = true;
 							break;
-						case 2 :
-							do {
-								try {
-									System.out.println("Please input seats to be canceled for this transaction");
-									System.out.print("Input: ");
-									ticketID = Integer.parseInt(scan.nextLine());
-									Ticket foundTicket=null;
-									for (Ticket ticketIter : selectedScreening.getSoldTickets()) {
-										if (ticketIter.getTicketNum()==ticketID) {
-											foundTicket = ticketIter;
-											break; // Stop searching once the ticket is found
-										}
-									}
-									if(foundTicket!=null) {
-										System.out.println("Ticket found");
-										selectedScreening.getSeatLayout().cancel(foundTicket);
-									}else {
-										System.out.println("Ticket not found");
-									}
-								}catch(Exception e){
-									ticketID = 0;
-								}
-							}while(ticketID==0);
-							break;
-						case 3:
+						case 2:
+							returnCinema = false;
 							break;
 						}
+						break;
+					case 2 :
+						do {
+							try {
+								System.out.println("Please input seats to be canceled for this transaction");
+								System.out.print("Input: ");
+								ticketID = Integer.parseInt(scan.nextLine());
+								Ticket foundTicket=null;
+								for (Ticket ticketIter : selectedScreening.getSoldTickets()) {
+									if (ticketIter.getTicketNum()==ticketID) {
+										foundTicket = ticketIter;
+										break; // Stop searching once the ticket is found
+									}
+								}
+								if(foundTicket!=null) {
+									System.out.println("Ticket found");
+									selectedScreening.getSeatLayout().cancel(foundTicket);
+								}else {
+									System.out.println("Ticket not found");
+								}
+							}catch(Exception e){
+								ticketID = 0;
+							}
+						}while(ticketID==0);
+						break;
+					case 3:
+						break;
 					}
-				}while(returnCinema);
-				break;
-			}
+				//}
+			}while(returnCinema);
+			//break;
+			//}
 		}
 		scan.close();
 		System.out.println("                   ********** Application End **********");	
