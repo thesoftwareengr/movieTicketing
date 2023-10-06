@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -72,49 +74,47 @@ public class MovieReservationSystem {
 					System.out.println("\n!!Invalid MovieID! Please Input a valid MovieID within the Cinemas!!");
 				}
 			}while(true);
-
-
-
-
+			if(inf==false) {
+				break;
+			}
 
 			do {
-				//if(mrs.screenings.containsKey(MovieID)) {//wala gamit
-					Screening selectedScreening = mrs.screenings.get(MovieID);
+				Screening selectedScreening = mrs.screenings.get(MovieID);
 
-					System.out.println("\nCINEMA " + MovieID.charAt(0));
-					System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - " + Screening.endTimeCalc(selectedScreening.getStartTime(), selectedScreening.getMovieShowing().getLength()));
-					System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
+				System.out.println("\nCINEMA " + MovieID.charAt(0));
+				System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - " + Screening.endTimeCalc(selectedScreening.getStartTime(), selectedScreening.getMovieShowing().getLength()));
+				System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
 
-					selectedScreening.getSeatLayout().display();
-					System.out.println();
-					int inputValue = 0;
-					do {
+				selectedScreening.getSeatLayout().display();
+				System.out.println();
+				int inputValue = 0;
+				do {
 
-						try {
-							System.out.println("Legend: [Xn ] = available seat, [Xn*] = reserved seat");
-							System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
-									+ "\n[1] - Reserve"
-									+ "\n[2] - Cancel Reservation"
-									+ "\n[3] - Exit");
-							System.out.print("Input: ");
-							inputValue = Integer.parseInt(scan.nextLine());
-						}catch(Exception e){
-							inputValue = 0;
-						}
-						if(inputValue >= 1 && inputValue <= 3) {
-							break;
-						} else {
-							System.out.println("\nInvalid InputValue! Please Input a Valid Integer to Proceed");
-						}
-						
-						
-					}while(true);
+					try {
+						System.out.println("Legend: [Xn ] = available seat, [Xn*] = reserved seat");
+						System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
+								+ "\n[1] - Reserve"
+								+ "\n[2] - Cancel Reservation"
+								+ "\n[3] - Exit");
+						System.out.print("Input: ");
+						inputValue = Integer.parseInt(scan.nextLine());
+					}catch(Exception e){
+						inputValue = 0;
+					}
+					if(inputValue >= 1 && inputValue <= 3) {
+						break;
+					} else {
+						System.out.println("\nInvalid InputValue! Please Input a Valid Integer to Proceed");
+					}
+					
+					
+				}while(true);
 
-					switch(inputValue) {
+				switch(inputValue) {
 					case 1:
 						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
 						selectedScreening.getSoldTickets().add(ticket);
-
+	
 						do {
 							try {
 								System.out.println("Please Input \"1\" or \"2\" to Proceed back to Cinema "+MovieID.charAt(0)+" or the Main Menu"
@@ -126,7 +126,7 @@ public class MovieReservationSystem {
 								inputValue = 0;
 							}
 						}while(inputValue < 1 || inputValue > 2) ;
-
+	
 						switch(inputValue) {
 						case 1: 
 							returnCinema = true;
@@ -135,11 +135,12 @@ public class MovieReservationSystem {
 							returnCinema = false;
 							break;
 						}
+						mrs.generateReservationsCSV();
 						break;
 					case 2 :
 						do {
 							try {
-								System.out.println("Please input seats to be canceled for this transaction");
+								System.out.println("Please ticket number to be cancelled");
 								System.out.print("Input: ");
 								ticketID = Integer.parseInt(scan.nextLine());
 								Ticket foundTicket=null;
@@ -159,14 +160,12 @@ public class MovieReservationSystem {
 								ticketID = 0;
 							}
 						}while(ticketID==0);
+						mrs.generateReservationsCSV();
 						break;
 					case 3:
 						break;
-					}
-				//}
+				}
 			}while(returnCinema);
-			//break;
-			//}
 		}
 		scan.close();
 		System.out.println("                   ********** Application End **********");	
@@ -191,13 +190,10 @@ public class MovieReservationSystem {
 				movieCtr=0;
 				values = line.split(",");
 
-				//		        CSV indexes
-				//		        0 - date
-				//		        1 - cinema num
-				//		        2 - start time
-				//		        3 - isPremiere //dne
-				//		        4 - title
-				//		        5 - duration
+//		        CSV indexes
+//		        0 - date			1 - cinema num
+//		        2 - start time		3 - isPremiere
+//		        4 - title			5 - duration
 
 				for(int ndx=0; ndx<values.length;ndx++) {
 					values[ndx] = values[ndx].substring(1, values[ndx].length()-1);
@@ -241,7 +237,7 @@ public class MovieReservationSystem {
 		String outputPath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"-reservations.csv";
 
 		try {
-			FileWriter fileWriter = new FileWriter(outputPath);
+			OutputStreamWriter fileWriter = new OutputStreamWriter(new FileOutputStream(outputPath));
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
 			//No header, just like sir Ryan's sample

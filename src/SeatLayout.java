@@ -89,6 +89,8 @@ public class SeatLayout {
 				System.out.print(reservations.size()+" seat"+(reservations.size()>1?"s":""));
 				if(seniors>0) {
 					System.out.println(" with "+seniors+ " senior"+(seniors>1?"s":""));
+				}else {
+					System.out.println();
 				}
 				System.out.print("Input: ");
 				confirm = scan.nextLine();
