@@ -113,7 +113,9 @@ public class MovieReservationSystem {
 				switch(inputValue) {
 					case 1:
 						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
-						selectedScreening.getSoldTickets().add(ticket);
+						if(ticket!=null) {
+							selectedScreening.getSoldTickets().add(ticket);
+						}
 	
 						do {
 							try {
