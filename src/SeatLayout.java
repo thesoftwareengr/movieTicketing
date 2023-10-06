@@ -71,10 +71,10 @@ public class SeatLayout {
 						if(seniors<=reservations.size()) {
 							break;
 						}else {
-							System.out.println("---------- error message, more seniors than reserved seats");
+							System.out.println("Invalid Integer Value! Exceeds maximum value");
 						}
 					}else {
-						System.out.println("----- error message, invalid input");
+						System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
 					}
 				}
 				price = ((reservations.size()-seniors)*350) + (seniors * 0.2 * 350);
@@ -86,9 +86,9 @@ public class SeatLayout {
 			String confirm;
 			while(true) {
 				System.out.println("Confirm this ticket: (Yes or No)");
-				System.out.print(reservations.size()+" seats");
+				System.out.print(reservations.size()+" seat"+(reservations.size()>1?"s":""));
 				if(seniors>0) {
-					System.out.println(" with "+seniors+ "seniors");
+					System.out.println(" with "+seniors+ " senior"+(seniors>1?"s":""));
 				}
 				System.out.print("Input: ");
 				confirm = scan.nextLine();
@@ -114,7 +114,7 @@ public class SeatLayout {
 		if(seat.length()==2 && (seat.charAt(0)>= 'A' && seat.charAt(0) <= 'H') && (((seat.charAt(1)) - '0') > 0 && (seat.charAt(1)-'0') <= 5))  {
 			if(!seats[(int) seat.charAt(0) -'A'][seat.charAt(1) - '0'-1]) {
 				reservations.add(seat);
-				System.out.println("A seat has been added successfully");
+				System.out.println("Seat ["+seat+"] has been added successfully");
 			}else {
 				errors[1].add(seat);
 			}
@@ -141,19 +141,18 @@ public class SeatLayout {
 					System.out.println("Enter the correct seat: ");
 					correctSeat=scan.nextLine();
 					inputValidation(errors, correctSeat, reservations);
-					errors[index].remove(error);
+					iterator.remove();
 					break;
 				}else if(selection.equalsIgnoreCase("cancel")) {
 					System.out.println("---cancel transaction error message");
-					errors[index].remove(error);
+					iterator.remove();
 					break;
 				}
 			}
 		}
 		//scan.close();
 	}
-	//
-//	/l;oo;o[
+	
 	public void cancel(Ticket ticket){
 		if(!ticket.isActive()){
 			System.out.println("--------- ticket is already inactive");
