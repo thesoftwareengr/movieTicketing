@@ -71,10 +71,10 @@ public class SeatLayout {
 						if(seniors<=reservations.size()) {
 							break;
 						}else {
-							System.out.println("---------- error message, more seniors than reserved seats");
+							System.out.println("Invalid Integer Value! Exceeds maximum value");
 						}
 					}else {
-						System.out.println("----- error message, invalid input");
+						System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
 					}
 				}
 				price = ((reservations.size()-seniors)*350) + (seniors * 0.2 * 350);
@@ -141,19 +141,18 @@ public class SeatLayout {
 					System.out.println("Enter the correct seat: ");
 					correctSeat=scan.nextLine();
 					inputValidation(errors, correctSeat, reservations);
-					errors[index].remove(error);
+					iterator.remove();
 					break;
 				}else if(selection.equalsIgnoreCase("cancel")) {
 					System.out.println("---cancel transaction error message");
-					errors[index].remove(error);
+					iterator.remove();
 					break;
 				}
 			}
 		}
 		//scan.close();
 	}
-	//
-//	/l;oo;o[
+	
 	public void cancel(Ticket ticket){
 		if(!ticket.isActive()){
 			System.out.println("--------- ticket is already inactive");
