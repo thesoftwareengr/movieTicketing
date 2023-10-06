@@ -35,8 +35,8 @@ public class SeatLayout {
 		errors[1] = new ArrayList<String>();
 		
 		if(this.availableSeats<=0) {
-			
 			return null;
+			
 		}else {
 			System.out.println("Please input seats to be reserved for this transaction:");
 			System.out.print("Input: ");
@@ -77,7 +77,7 @@ public class SeatLayout {
 						System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
 					}
 				}
-				price = ((reservations.size()-seniors)*350) + (seniors * 0.2 * 350);
+				price = ((reservations.size()-seniors)*350) + (seniors * 0.8 * 350);
 			}else {
 				price = reservations.size()*500;
 			}
@@ -85,12 +85,14 @@ public class SeatLayout {
 			
 			String confirm;
 			while(true) {
-				System.out.println("Confirm this ticket: (Yes or No)");
+				System.out.println("Confirm this ticket:");
 				System.out.print(reservations.size()+" seat"+(reservations.size()>1?"s":""));
 				if(seniors>0) {
 					System.out.println(" with "+seniors+ " senior"+(seniors>1?"s":""));
+				}else {
+					System.out.println();
 				}
-				System.out.print("Input: ");
+				System.out.print("Input (Yes or No): ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
 					//scan.close();
