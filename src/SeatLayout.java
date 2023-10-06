@@ -35,7 +35,7 @@ public class SeatLayout {
 		errors[1] = new ArrayList<String>();
 		
 		if(this.availableSeats<=0) {
-			scan.close();
+			
 			return null;
 		}else {
 			System.out.println("Please input seats to be reserved for this transaction:");
@@ -57,7 +57,7 @@ public class SeatLayout {
 			if(reservations.size()<=0) {
 				//no seats were added
 				System.out.println("------- error message here");
-				scan.close();
+				//scan.close();
 				return null;	
 			}
 			int seniors=0;
@@ -93,7 +93,7 @@ public class SeatLayout {
 				System.out.print("Input: ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
-					scan.close();
+					//scan.close();
 					break;
 				}
 			}
@@ -150,9 +150,10 @@ public class SeatLayout {
 				}
 			}
 		}
-		scan.close();
+		//scan.close();
 	}
-	
+	//
+//	/l;oo;o[
 	public void cancel(Ticket ticket){
 		if(!ticket.isActive()){
 			System.out.println("--------- ticket is already inactive");
