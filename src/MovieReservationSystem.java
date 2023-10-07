@@ -45,39 +45,33 @@ public class MovieReservationSystem {
 
 			System.out.println("\n                         ********** MAIN MENU **********");		
 
-			if(mrs.showingDates.size()>1){
-				while(true){
-					System.out.println("\nPlease select date of showing (EXIT to exit the application)");
-					Iterator<LocalDate> iterator = mrs.showingDates.iterator();
-					int dateCtr=1;
-					while(iterator.hasNext()){
-						System.out.println("["+dateCtr+"] "+iterator.next());
-						dateCtr++;
-					}
-					System.out.print("Input: ");
-					showingDateInput = scan.nextLine();
-					if(showingDateInput.equalsIgnoreCase("EXIT")) {
-						break;
-					}else{
-						try{
-							showingDateIndex = Integer.parseInt(showingDateInput);
-							if(showingDateIndex<=mrs.showingDates.size()) {
-								showingDateIndex--;
-								dateSelected = mrs.showingDates.get(showingDateIndex);
-								System.out.println("Date ["+dateSelected+"] has been selected");
-								break;
-							}else {
-								System.out.println("Invalid Integer Value! Exceeds maximum value");
-							}
-						}catch(Exception e) {
-							System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
+			while(true){
+				System.out.println("\nPlease select date of showing (EXIT to exit the application)");
+				Iterator<LocalDate> iterator = mrs.showingDates.iterator();
+				int dateCtr=1;
+				while(iterator.hasNext()){
+					System.out.println("["+dateCtr+"] "+iterator.next());
+					dateCtr++;
+				}
+				System.out.print("Input: ");
+				showingDateInput = scan.nextLine();
+				if(showingDateInput.equalsIgnoreCase("EXIT")) {
+					break;
+				}else{
+					try{
+						showingDateIndex = Integer.parseInt(showingDateInput);
+						if(showingDateIndex<=mrs.showingDates.size()) {
+							showingDateIndex--;
+							dateSelected = mrs.showingDates.get(showingDateIndex);
+							System.out.println("Date ["+dateSelected+"] has been selected");
+							break;
+						}else {
+							System.out.println("Invalid Integer Value! Exceeds maximum value");
 						}
+					}catch(Exception e) {
+						System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
 					}
 				}
-			}else{
-				showingDateIndex=0;
-				dateSelected = mrs.showingDates.get(showingDateIndex);
-				System.out.println("System only has 1 showing date available - "+dateSelected);
 			}
 			if(showingDateInput!=null && showingDateInput.equalsIgnoreCase("EXIT")) {
 				break;
