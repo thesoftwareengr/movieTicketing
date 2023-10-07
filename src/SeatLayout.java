@@ -46,7 +46,7 @@ public class SeatLayout {
 			for(String inputs:inputedStrings) {
 				inputValidation(errors, inputs,reservations);
 			}
-			System.out.println(errors[0].size() + " , " + errors[1].size() +" , "+reservations.size());
+			// System.out.println(errors[0].size() + " , " + errors[1].size() +" , "+reservations.size());
 			while(!(errors[0].isEmpty() && errors[1].isEmpty())) {
 				if(!errors[0].isEmpty()) {
 					inputCorrection(errors, 0,reservations);
@@ -64,7 +64,7 @@ public class SeatLayout {
 			double price;
 			if(!screening.getMovieShowing().getIsPremier()) {
 				while(true) {
-					System.out.print("Please input the number of seniors: ");
+					System.out.print("\nPlease input the number of seniors: ");
 					if(scan.hasNextInt()) {
 						seniors = scan.nextInt();
 						scan.nextLine();
@@ -85,13 +85,12 @@ public class SeatLayout {
 			
 			String confirm;
 			while(true) {
-				System.out.println("Confirm this ticket:");
-				System.out.print(reservations.size()+" seat"+(reservations.size()>1?"s":""));
+				System.out.print("\nConfirm this ticket: ("+reservations.size()+" seat"+(reservations.size()>1?"s":""));
 				if(seniors>0) {
-					System.out.println(" with "+seniors+ " senior"+(seniors>1?"s":""));
-				}else {
-					System.out.println();
+					System.out.print(" with "+seniors+ " senior"+(seniors>1?"s":""));
 				}
+				System.out.println(")");
+				System.out.println("Total price: "+ticket.getTotalPrice());
 				System.out.print("Input (Yes or No): ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
@@ -142,7 +141,7 @@ public class SeatLayout {
 				System.out.print("Input (Correct or cancel): ");
 				selection = scan.nextLine();
 				if(selection.equalsIgnoreCase("correct")) {
-					System.out.println("Enter the correct seat: ");
+					System.out.print("Enter the correct seat: ");
 					correctSeat=scan.nextLine();
 					inputValidation(errors, correctSeat, reservations);
 					iterator.remove();
@@ -165,7 +164,7 @@ public class SeatLayout {
 			while(iterator.hasNext()){
 				String i = iterator.next();
 				seats[(int) i.charAt(0) -'A'][i.charAt(1) - '0'-1]=false;
-				iterator.remove();
+				// iterator.remove(); //adding this line leaves an empty array in the CSV
 				availableSeats++;
 			}
 			ticket.setActive(false);
@@ -179,6 +178,10 @@ public class SeatLayout {
 
 	public void setSeats(boolean[][] seats) {
 		this.seats = seats;
+	}
+
+	public void setSeat(int x, int y, boolean value){
+		this.seats[x][y]=value;
 	}
 
 	public int getAvailableSeats() {
