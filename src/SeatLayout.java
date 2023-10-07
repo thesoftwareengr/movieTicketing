@@ -113,6 +113,7 @@ public class SeatLayout {
 	}
 	
 	public void inputValidation(ArrayList<String>[] errors, String seat, ArrayList<String> reservations){
+		seat=seat.trim().toUpperCase();
 		if(seat.length()==2 && (seat.charAt(0)>= 'A' && seat.charAt(0) <= 'H') && (((seat.charAt(1)) - '0') > 0 && (seat.charAt(1)-'0') <= 5))  {
 			if(!seats[(int) seat.charAt(0) -'A'][seat.charAt(1) - '0'-1] && !reservations.contains(seat)) {
 				reservations.add(seat);
