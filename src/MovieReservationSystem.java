@@ -79,7 +79,7 @@ public class MovieReservationSystem {
 				dateSelected = mrs.showingDates.get(showingDateIndex);
 				System.out.println("System only has 1 showing date available - "+dateSelected);
 			}
-			if(showingDateInput.equalsIgnoreCase("EXIT")) {
+			if(showingDateInput!=null && showingDateInput.equalsIgnoreCase("EXIT")) {
 				break;
 			}
 
@@ -249,6 +249,7 @@ public class MovieReservationSystem {
 		        // 4 - title			5 - duration
 
 				for(int ndx=0; ndx<values.length;ndx++) {
+					// System.out.println(values[ndx]);
 					values[ndx] = values[ndx].substring(1, values[ndx].length()-1);
 				}
 				LocalDate dateOfShowing = LocalDate.parse(values[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -295,7 +296,7 @@ public class MovieReservationSystem {
 		String line;
 		String[] values;
 		ArrayList<String> csvData, seats;
-		int ctr=0;
+		int ctr=0, tot=0;
 		try (BufferedReader br = new BufferedReader(new FileReader("reservations.csv"))) {
 			while ((line = br.readLine()) != null) {
 				csvData = new ArrayList<String>();
@@ -334,14 +335,14 @@ public class MovieReservationSystem {
 						scr.getSoldTickets().add(ticket);
 						scr.getSeatLayout().setAvailableSeats(scr.getSeatLayout().getAvailableSeats()-seats.size());
 						for(String seat:seats){
-							// System.out.println(seat);
 							scr.getSeatLayout().setSeat((int) seat.charAt(0) -'A',seat.charAt(1) - '0'-1,true);
 						}
+						ctr++;
 					}
 				}
-				ctr++;
+				tot++;
 			}
-			System.out.println("Imported ["+ctr+"] tickets");
+			System.out.println("Imported ["+ctr+"/"+tot+"] tickets");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -355,7 +356,7 @@ public class MovieReservationSystem {
 
 			//No header, just like sir Ryan's sample
 
-			//Not sorted in ascending order but my organization in the HashMap
+			//Not sorted in ascending order because the data structure used is HashMap
 			Set<String> keys = screenings.keySet();
 			for(String key: keys) {
 				for(Ticket ticket: screenings.get(key).getSoldTickets()) {
