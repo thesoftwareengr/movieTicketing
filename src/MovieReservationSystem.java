@@ -60,7 +60,7 @@ public class MovieReservationSystem {
 			do {
 				System.out.println("Pick a movie ID to view the seat layout: (QUIT to exit)");
 				System.out.print("Input: ");
-				MovieID = scan.nextLine();
+				MovieID = scan.nextLine().toUpperCase();
 
 				if(mrs.screenings.containsKey(MovieID)) {
 					break;
@@ -106,8 +106,6 @@ public class MovieReservationSystem {
 					} else {
 						System.out.println("\nInvalid InputValue! Please Input a Valid Integer to Proceed");
 					}
-					
-					
 				}while(true);
 
 				switch(inputValue) {
@@ -170,6 +168,7 @@ public class MovieReservationSystem {
 			}while(returnCinema);
 		}
 		scan.close();
+		mrs.generateReservationsCSV();
 		System.out.println("                   ********** Application End **********");	
 
 	}
@@ -192,10 +191,10 @@ public class MovieReservationSystem {
 				movieCtr=0;
 				values = line.split(",");
 
-//		        CSV indexes
-//		        0 - date			1 - cinema num
-//		        2 - start time		3 - isPremiere
-//		        4 - title			5 - duration
+		        // CSV indexes
+		        // 0 - date			1 - cinema num
+		        // 2 - start time		3 - isPremiere
+		        // 4 - title			5 - duration
 
 				for(int ndx=0; ndx<values.length;ndx++) {
 					values[ndx] = values[ndx].substring(1, values[ndx].length()-1);
@@ -235,7 +234,7 @@ public class MovieReservationSystem {
 	}
 
 	public void generateReservationsCSV() {
-		//		https://blog.gitnux.com/code/java-csv-write/
+		// https://blog.gitnux.com/code/java-csv-write/
 		String outputPath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"-reservations.csv";
 
 		try {

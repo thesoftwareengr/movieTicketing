@@ -100,7 +100,7 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return ticketNum+"|"+this.getMovie().getShowingDate().toString()+"|"+this.cinemaNum+"|"+this.showingTime.toString()+"|"+this.reservedSeats+"|"+this.totalPrice;
+		return "\""+ticketNum+"\",\""+this.getMovie().getShowingDate().toString()+"\",\""+this.cinemaNum+"\",\""+this.showingTime.toString()+"\",\""+this.reservedSeats+"\",\""+this.totalPrice+"\"";
 	}
 
 	public void display() {
