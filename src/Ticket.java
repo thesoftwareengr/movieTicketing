@@ -1,4 +1,7 @@
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,6 +27,29 @@ public class Ticket {
 		this.seniors = seniors;
 		this.movie = movie;
 		referenceTicketNumber++;
+	}
+
+	public Ticket(ArrayList<String> csvData, ArrayList<String> reservedSeats, Movie movie) {
+		// CSV data indexes
+		// 0 - ticketNum	
+		// 1 - cinemaNum	2 - start time
+		// 3 - price		4 - isActive
+		
+		this.ticketNum = Integer.valueOf(csvData.get(0));
+		this.showingTime = LocalTime.parse(csvData.get(2), DateTimeFormatter.ofPattern("HH:mm"));
+		this.reservedSeats = reservedSeats;
+		this.totalPrice = Double.valueOf(csvData.get(3));
+		this.cinemaNum = Integer.valueOf(csvData.get(1));
+		this.isActive = csvData.get(4).equals("active")?true:false;
+		// this.seniors = seniors;
+		this.movie = movie;
+		referenceTicketNumber++;
+
+		if(movie.getIsPremier()){
+			this.seniors=0;
+		}else{
+			seniors = (int) ((totalPrice - (reservedSeats.size() * 350)) / ((-0.2) * 350));
+		}
 	}
 
 	public Movie getMovie() {
@@ -100,7 +126,8 @@ public class Ticket {
 
 	@Override
 	public String toString() {
-		return "\""+ticketNum+"\",\""+this.getMovie().getShowingDate().toString()+"\",\""+this.cinemaNum+"\",\""+this.showingTime.toString()+"\",\""+this.reservedSeats+"\",\""+this.totalPrice+"\", \""+(this.isActive()==true?"active":"cancelled")+"\"";
+		DecimalFormat df = new DecimalFormat("0.##");
+		return "\""+ticketNum+"\",\""+this.getMovie().getShowingDate().toString()+"\",\""+this.cinemaNum+"\",\""+this.showingTime.toString()+"\",\""+this.reservedSeats.toString().substring(1, this.reservedSeats.toString().length()-1)+"\",\""+df.format(this.totalPrice)+"\",\""+(this.isActive()==true?"active":"cancelled")+"\"";
 	}
 
 	public void display() {
