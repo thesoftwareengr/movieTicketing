@@ -100,6 +100,7 @@ public class SeatLayout {
 				}
 			}
 			if(confirm.equalsIgnoreCase("Yes")){
+				System.out.println("\nYour ticket number is: "+ticket.getTicketNum()+"\n");
 				for(String i: reservations) {
 					seats[(int) i.charAt(0) -'A'][i.charAt(1) - '0'-1]=true;
 				}
@@ -163,10 +164,12 @@ public class SeatLayout {
 			Iterator<String> iterator = ticket.getReservedSeats().iterator();
 			while(iterator.hasNext()){
 				String i = iterator.next();
-				ticket.getReservedSeats().remove(i);
+				seats[(int) i.charAt(0) -'A'][i.charAt(1) - '0'-1]=false;
+				iterator.remove();
 				availableSeats++;
 			}
 			ticket.setActive(false);
+			System.out.println("Ticket "+ticket.getTicketNum()+" is now inactive.");
 		}
 	}
 

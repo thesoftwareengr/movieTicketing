@@ -53,7 +53,7 @@ public class MovieReservationSystem {
 			}
 
 
-			int ticketID;
+			int ticketID=0;
 			boolean returnCinema = false;
 			//while(true) {
 
@@ -138,31 +138,36 @@ public class MovieReservationSystem {
 						mrs.generateReservationsCSV();
 						break;
 					case 2 :
+						Ticket foundTicket=null;
 						do {
 							try {
 								System.out.println("Please ticket number to be cancelled");
 								System.out.print("Input: ");
 								ticketID = Integer.parseInt(scan.nextLine());
-								Ticket foundTicket=null;
 								for (Ticket ticketIter : selectedScreening.getSoldTickets()) {
 									if (ticketIter.getTicketNum()==ticketID) {
 										foundTicket = ticketIter;
 										break; // Stop searching once the ticket is found
 									}
 								}
-								if(foundTicket!=null) {
-									System.out.println("Ticket found");
-									selectedScreening.getSeatLayout().cancel(foundTicket);
-								}else {
-									System.out.println("Ticket not found");
+								if(foundTicket==null) {
+									ticketID = -1;	
 								}
 							}catch(Exception e){
-								ticketID = 0;
+								ticketID = -1;
 							}
-						}while(ticketID==0);
+						}while(ticketID<=0);
+
+						if(foundTicket!=null) {
+							System.out.println("Ticket found");
+							selectedScreening.getSeatLayout().cancel(foundTicket);
+						}else {
+							System.out.println("Ticket not found");
+						}
 						mrs.generateReservationsCSV();
 						break;
 					case 3:
+						returnCinema=false;
 						break;
 				}
 			}while(returnCinema);
