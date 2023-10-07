@@ -57,7 +57,6 @@ public class Movie {
 		this.showingDate = showingDate;
 	}
 	
-	
 	public void setIsPremier(Boolean isPremier) {
 		this.isPremier = isPremier;
 	}
