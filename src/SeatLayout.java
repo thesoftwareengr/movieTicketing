@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -38,7 +39,7 @@ public class SeatLayout {
 			return null;
 			
 		}else {
-			System.out.println("Please input seats to be reserved for this transaction:");
+			System.out.println("\nPlease input seats to be reserved for this transaction:");
 			System.out.print("Input: ");
 			
 			str = scan.nextLine();
@@ -85,12 +86,14 @@ public class SeatLayout {
 			
 			String confirm;
 			while(true) {
+				DecimalFormat df = new DecimalFormat("0.##");
+
 				System.out.print("\nConfirm this ticket: ("+reservations.size()+" seat"+(reservations.size()>1?"s":""));
 				if(seniors>0) {
 					System.out.print(" with "+seniors+ " senior"+(seniors>1?"s":""));
 				}
 				System.out.println(")");
-				System.out.println("Total price: "+ticket.getTotalPrice());
+				System.out.println("Total price: PHP"+df.format(ticket.getTotalPrice()));
 				System.out.print("Input (Yes or No): ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){

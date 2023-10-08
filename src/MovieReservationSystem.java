@@ -25,13 +25,14 @@ public class MovieReservationSystem {
 	public HashMap<String, Screening> screenings;
 
 	public static void main(String[] args) {	
-		boolean inf = true;
-		String MovieID = "";
-		String showingDateInput=null;
-		int showingDateIndex=0;
+		String showingDateInput=null, MovieID = null;
+		int inputValue = 0, ticketID=0, showingDateIndex=0, dateCtr=1, cinemaNumber = 0;
 		LocalDate dateSelected=null;
-		Scanner scan = new Scanner(System.in);
+		Ticket foundTicket=null;
+		
+		Screening selectedScreening =null;
 
+		Scanner scan = new Scanner(System.in);
 		MovieReservationSystem mrs = new MovieReservationSystem();
 		mrs.readCSV();
 		mrs.readGeneratedCSVs();
@@ -41,121 +42,102 @@ public class MovieReservationSystem {
 				.sorted(Map.Entry.comparingByKey())
 				.collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Entry::getKey))));
 
-		while(inf==true){
-
+		while(true){ //main program loop
 			System.out.println("\n                         ********** MAIN MENU **********");		
 
-			while(true){
-				System.out.println("\nPlease select date of showing (EXIT to exit the application)");
-				Iterator<LocalDate> iterator = mrs.showingDates.iterator();
-				int dateCtr=1;
-				while(iterator.hasNext()){
-					System.out.println("["+dateCtr+"] "+iterator.next());
-					dateCtr++;
+			while(true){  // user input: reserve or cancel 
+				try {
+					System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in a Cinema"
+							+ "\n[1] - Reserve"
+							+ "\n[2] - Cancel Reservation"
+							+ "\n[3] - Exit");
+					System.out.print("Input: ");
+					inputValue = Integer.parseInt(scan.nextLine());
+				}catch(Exception e){
+					inputValue = 0;
 				}
-				System.out.print("Input: ");
-				showingDateInput = scan.nextLine();
-				if(showingDateInput.equalsIgnoreCase("EXIT")) {
-					break;
-				}else{
-					try{
-						showingDateIndex = Integer.parseInt(showingDateInput);
-						if(showingDateIndex<=mrs.showingDates.size()) {
-							showingDateIndex--;
-							dateSelected = mrs.showingDates.get(showingDateIndex);
-							System.out.println("Date ["+dateSelected+"] has been selected");
-							break;
-						}else {
-							System.out.println("Invalid Integer Value! Exceeds maximum value");
-						}
-					}catch(Exception e) {
-						System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
-					}
-				}
-			}
-			if(showingDateInput!=null && showingDateInput.equalsIgnoreCase("EXIT")) {
-				break;
-			}
-
-			int cinemaNumber = 0;
-			for (Map.Entry<String, Screening> entry : sortedEntries) {
-				String key = entry.getKey();
-				Screening data = mrs.screenings.get(entry.getKey());
-				if(key.substring(2, key.length()).equals(dateSelected.toString())){
-					if(Character.getNumericValue(key.charAt(0)) != cinemaNumber) {
-						cinemaNumber = Character.getNumericValue(key.charAt(0));
-						System.out.println("\nCINEMA " + cinemaNumber);
-						System.out.println("ID        Movies              Time      Seats Available  Premiere");
-					}
-					System.out.printf("%-2s   %-15s...  %-5s - %-5s    %-12s      %-3s\n", key.substring(0,2), (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()),data.getStartTime(), Screening.endTimeCalc(data.getStartTime(), data.getMovieShowing().getLength()),(data.getSeatLayout().getAvailableSeats()>0?"["+data.getSeatLayout().getAvailableSeats()+"] Seat(s)":"[00] Full"),(data.getMovieShowing().getIsPremier()? "Yes":"No"));
-				}
-
-			}
-
-
-			int ticketID=0;
-			boolean returnCinema = false;
-			//while(true) {
-
-			do {
-				System.out.println("Pick a movie ID to view the seat layout: (QUIT to exit)");
-				System.out.print("Input: ");
-				MovieID = scan.nextLine().toUpperCase()+dateSelected;
-
-				if(mrs.screenings.containsKey(MovieID)) {
-					break;
-				}else if(MovieID.equalsIgnoreCase("QUIT")) {
-					inf=false;
-					break;
-				} else if(!inf) {
-					inf=true;
+				if(inputValue >= 1 && inputValue <= 3) {
 					break;
 				} else {
-					System.out.println("\n!!Invalid MovieID! Please Input a valid MovieID within the Cinemas!!");
+					System.out.println("\nInvalid InputValue! Please Input a Valid Integer to Proceed");
 				}
-			}while(true);
-			if(inf==false) {
-				break;
 			}
+			if(inputValue==3){
+				mrs.generateReservationsCSV();
+				System.out.println("Exiting... Goodbye.");
+				break; // break main program loop
+			}
+			switch(inputValue) {
+				case 1: //reservation
+					while(true){ // loop for multiple reservations
+						while(true){ //user input: date
+							System.out.println("\nPlease select date of showing (EXIT to exit the application)");
+							Iterator<LocalDate> iterator = mrs.showingDates.iterator();
+							dateCtr=1;
+							while(iterator.hasNext()){
+								System.out.println("["+dateCtr+"] "+iterator.next());
+								dateCtr++;
+							}
+							System.out.print("Input: ");
+							showingDateInput = scan.nextLine();
+							if(showingDateInput.equalsIgnoreCase("EXIT")) {
+								break; //user input: date
+							}else{
+								try{
+									showingDateIndex = Integer.parseInt(showingDateInput);
+									if(showingDateIndex<=mrs.showingDates.size()) {
+										showingDateIndex--;
+										dateSelected = mrs.showingDates.get(showingDateIndex);
+										System.out.println("Date ["+dateSelected+"] has been selected");
+										break; //break user input: date
+									}else {
+										System.out.println("Invalid Integer Value! Exceeds maximum value");
+									}
+								}catch(Exception e) {
+									System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
+								}
+							}
+						}
+						if(showingDateInput.equalsIgnoreCase("EXIT")) {
+								break; // break loop for multiple reservations
+						}
+						for (Map.Entry<String, Screening> entry : sortedEntries) {
+							String key = entry.getKey();
+							Screening data = mrs.screenings.get(entry.getKey());
+							
+							if(key.substring(2, key.length()).equals(dateSelected.toString())){
+								if(Character.getNumericValue(key.charAt(0)) != cinemaNumber) {
+									cinemaNumber = Character.getNumericValue(key.charAt(0));
+									System.out.println("\nCINEMA " + cinemaNumber);
+									System.out.println("ID        Movies              Time      Seats Available  Premiere");
+								}
+								System.out.printf("%-2s   %-15s...  %-5s - %-5s    %-12s      %-3s\n", key.substring(0,2), (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()),data.getStartTime(), Screening.endTimeCalc(data.getStartTime(), data.getMovieShowing().getLength()),(data.getSeatLayout().getAvailableSeats()>0?"["+data.getSeatLayout().getAvailableSeats()+"] Seat(s)":"[00] Full"),(data.getMovieShowing().getIsPremier()? "Yes":"No"));
+							}
+						}
+						while(true){ // user input: movieID
+							System.out.println("\nPick a movie ID to view the seat layout: (QUIT to exit)");
+							System.out.print("Input: ");
+							MovieID = scan.nextLine().toUpperCase();
 
-			do {
-				Screening selectedScreening = mrs.screenings.get(MovieID);
-
-				System.out.println("\nCINEMA " + MovieID.charAt(0));
-				System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - " + Screening.endTimeCalc(selectedScreening.getStartTime(), selectedScreening.getMovieShowing().getLength()));
-				System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
-
-				selectedScreening.getSeatLayout().display();
-				System.out.println();
-				int inputValue = 0;
-				do {
-
-					try {
-						System.out.println("Legend: [Xn ] = available seat, [Xn*] = reserved seat");
-						System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
-								+ "\n[1] - Reserve"
-								+ "\n[2] - Cancel Reservation"
-								+ "\n[3] - Exit");
-						System.out.print("Input: ");
-						inputValue = Integer.parseInt(scan.nextLine());
-					}catch(Exception e){
-						inputValue = 0;
-					}
-					if(inputValue >= 1 && inputValue <= 3) {
-						break;
-					} else {
-						System.out.println("\nInvalid InputValue! Please Input a Valid Integer to Proceed");
-					}
-				}while(true);
-
-				switch(inputValue) {
-					case 1:
+							if(MovieID.equalsIgnoreCase("QUIT")){
+								break; //break user input: movieID
+							}else if(mrs.screenings.containsKey(MovieID+dateSelected)) {
+								break; //break user input: movieID
+							} else {
+								System.out.println("moc "+MovieID);
+								System.out.println("\n!!Invalid MovieID! Please Input a valid MovieID within the Cinemas!!");
+							}
+						}
+						if(MovieID.equalsIgnoreCase("QUIT")){
+							break; //break loop for multiple reservations
+						}
+						selectedScreening = mrs.screenings.get(MovieID);
 						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
 						if(ticket!=null) {
 							selectedScreening.getSoldTickets().add(ticket);
+							mrs.generateReservationsCSV();
 						}
-	
-						do {
+						while(true) { // user input: reserve again
 							try {
 								System.out.println("Please Input \"1\" or \"2\" to Proceed back to Cinema "+MovieID.charAt(0)+" or the Main Menu"
 										+ "\n[1] - CINEMA " + MovieID.charAt(0)
@@ -165,54 +147,56 @@ public class MovieReservationSystem {
 							}catch(Exception e){
 								inputValue = 0;
 							}
-						}while(inputValue < 1 || inputValue > 2) ;
-	
-						switch(inputValue) {
-						case 1: 
-							returnCinema = true;
-							break;
-						case 2:
-							returnCinema = false;
-							break;
+							if(inputValue==1 || inputValue==2){
+								break; // break user input: reserve again
+							}
 						}
-						mrs.generateReservationsCSV();
-						break;
-					case 2 :
-						Ticket foundTicket=null;
-						do {
-							try {
-								System.out.println("Please ticket number to be cancelled");
-								System.out.print("Input: ");
-								ticketID = Integer.parseInt(scan.nextLine());
-								for (Ticket ticketIter : selectedScreening.getSoldTickets()) {
-									if (ticketIter.getTicketNum()==ticketID) {
-										foundTicket = ticketIter;
-										break; // Stop searching once the ticket is found
+						if(inputValue==2){
+							break; //break loop for multiple reservations
+						}
+					}
+					break;
+				case 2: //cancel.
+					foundTicket=null;
+					Screening scr=null;
+					while(true) { // user input: ticket number
+						try {
+							System.out.println("Please ticket number to be cancelled");
+							System.out.print("Input: ");
+							ticketID = Integer.parseInt(scan.nextLine());
+
+							Set<String> keys = mrs.screenings.keySet();
+							for(String k: keys){
+								scr = mrs.screenings.get(k);
+								for(Ticket ticket: scr.getSoldTickets()){
+									if(ticketID==ticket.getTicketNum()){
+										foundTicket=ticket;
+										break; //break inner loop
 									}
 								}
-								if(foundTicket==null) {
-									ticketID = -1;	
+								if(foundTicket!=null) {
+									break; //break outer loop
 								}
-							}catch(Exception e){
-								ticketID = -1;
 							}
-						}while(ticketID<=0);
 
-						if(foundTicket!=null) {
-							System.out.println("Ticket found");
-							selectedScreening.getSeatLayout().cancel(foundTicket);
-						}else {
-							System.out.println("Ticket not found");
+						}catch(Exception e){
+							ticketID = -1;
 						}
+						if(foundTicket!=null) {
+							break; //break user input: ticket number
+						}
+					}
+					if(foundTicket!=null && scr!=null) {
+						System.out.println("Ticket found");
+						scr.getSeatLayout().cancel(foundTicket);
 						mrs.generateReservationsCSV();
-						break;
-					case 3:
-						returnCinema=false;
-						break;
-				}
-			}while(returnCinema);
+					}else {
+						System.out.println("Ticket not found");
+					}
+					break;
+			}
+			mrs.generateReservationsCSV();
 		}
-		mrs.generateReservationsCSV();
 		scan.close();
 		System.out.println("                   ********** Application End **********");	
 
@@ -367,4 +351,184 @@ public class MovieReservationSystem {
 		}
 	}
 
+
+
+
+
+	public void dateSectionMenu(){
+		String showingDateInput=null;
+		int showingDateIndex=0;
+		LocalDate dateSelected=null;
+
+		while(true){
+			System.out.println("\nPlease select date of showing (EXIT to exit the application)");
+			Iterator<LocalDate> iterator = mrs.showingDates.iterator();
+			int dateCtr=1;
+			while(iterator.hasNext()){
+				System.out.println("["+dateCtr+"] "+iterator.next());
+				dateCtr++;
+			}
+			System.out.print("Input: ");
+			showingDateInput = scan.nextLine();
+			if(showingDateInput.equalsIgnoreCase("EXIT")) {
+				break;
+			}else{
+				try{
+					showingDateIndex = Integer.parseInt(showingDateInput);
+					if(showingDateIndex<=mrs.showingDates.size()) {
+						showingDateIndex--;
+						dateSelected = mrs.showingDates.get(showingDateIndex);
+						System.out.println("Date ["+dateSelected+"] has been selected");
+						break;
+					}else {
+						System.out.println("Invalid Integer Value! Exceeds maximum value");
+					}
+				}catch(Exception e) {
+					System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
+				}
+			}
+		}
+		if(showingDateInput!=null && showingDateInput.equalsIgnoreCase("EXIT")) {
+			break;
+		}
+	}
+
+	public void MovieSelection(){
+		int ticketID=0;
+		boolean returnCinema = false;
+		//while(true) {
+
+		do {
+			System.out.println("Pick a movie ID to view the seat layout: (QUIT to exit)");
+			System.out.print("Input: ");
+			MovieID = scan.nextLine().toUpperCase()+dateSelected;
+
+			if(mrs.screenings.containsKey(MovieID)) {
+				break;
+			}else if(MovieID.equalsIgnoreCase("QUIT")) {
+				// inf=false;
+				// break;
+			// } else if(!inf) {
+				// inf=true;
+				// break;
+			} else {
+				System.out.println("\n!!Invalid MovieID! Please Input a valid MovieID within the Cinemas!!");
+			}
+		}while(true);
+		// if(inf==false) {
+		// 	break;
+		// }
+	}
+
+	public void displayMovies(){
+		int cinemaNumber = 0;
+			for (Map.Entry<String, Screening> entry : sortedEntries) {
+				String key = entry.getKey();
+				Screening data = mrs.screenings.get(entry.getKey());
+				if(key.substring(2, key.length()).equals(dateSelected.toString())){
+					if(Character.getNumericValue(key.charAt(0)) != cinemaNumber) {
+						cinemaNumber = Character.getNumericValue(key.charAt(0));
+						System.out.println("\nCINEMA " + cinemaNumber);
+						System.out.println("ID        Movies              Time      Seats Available  Premiere");
+					}
+					System.out.printf("%-2s   %-15s...  %-5s - %-5s    %-12s      %-3s\n", key.substring(0,2), (data.getMovieShowing().getName().length()>15? data.getMovieShowing().getName().substring(0,15): data.getMovieShowing().getName()),data.getStartTime(), Screening.endTimeCalc(data.getStartTime(), data.getMovieShowing().getLength()),(data.getSeatLayout().getAvailableSeats()>0?"["+data.getSeatLayout().getAvailableSeats()+"] Seat(s)":"[00] Full"),(data.getMovieShowing().getIsPremier()? "Yes":"No"));
+			}
+		}
+	}
+
+	public void  reserveOrCancel(){
+		Screening selectedScreening = mrs.screenings.get(MovieID);
+
+		System.out.println("\nCINEMA " + MovieID.charAt(0));
+		System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - " + Screening.endTimeCalc(selectedScreening.getStartTime(), selectedScreening.getMovieShowing().getLength()));
+		System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
+
+		selectedScreening.getSeatLayout().display();
+		System.out.println();
+		int inputValue = 0;
+		do {
+
+			try {
+				System.out.println("Legend: [Xn ] = available seat, [Xn*] = reserved seat");
+				System.out.println("Please Input \"1\" or \"2\" to Reserve or Cancel a Seat in the Cinema"
+						+ "\n[1] - Reserve"
+						+ "\n[2] - Cancel Reservation"
+						+ "\n[3] - Exit");
+				System.out.print("Input: ");
+				inputValue = Integer.parseInt(scan.nextLine());
+			}catch(Exception e){
+				inputValue = 0;
+			}
+			if(inputValue >= 1 && inputValue <= 3) {
+				break;
+			} else {
+				System.out.println("\nInvalid InputValue! Please Input a Valid Integer to Proceed");
+			}
+		}while(true);
+	}
+
+	public void cases(){
+		switch(inputValue) {
+					case 1:
+						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
+						if(ticket!=null) {
+							selectedScreening.getSoldTickets().add(ticket);
+						}
+	
+						do {
+							try {
+								System.out.println("Please Input \"1\" or \"2\" to Proceed back to Cinema "+MovieID.charAt(0)+" or the Main Menu"
+										+ "\n[1] - CINEMA " + MovieID.charAt(0)
+										+ "\n[2] - Exit");
+								System.out.print("Input: ");
+								inputValue = Integer.parseInt(scan.nextLine());
+							}catch(Exception e){
+								inputValue = 0;
+							}
+						}while(inputValue < 1 || inputValue > 2) ;
+	
+						switch(inputValue) {
+						case 1: 
+							returnCinema = true;
+							break;
+						case 2:
+							returnCinema = false;
+							break;
+						}
+						mrs.generateReservationsCSV();
+						break;
+					case 2 :
+						Ticket foundTicket=null;
+						do {
+							try {
+								System.out.println("Please ticket number to be cancelled");
+								System.out.print("Input: ");
+								ticketID = Integer.parseInt(scan.nextLine());
+								for (Ticket ticketIter : selectedScreening.getSoldTickets()) {
+									if (ticketIter.getTicketNum()==ticketID) {
+										foundTicket = ticketIter;
+										break; // Stop searching once the ticket is found
+									}
+								}
+								if(foundTicket==null) {
+									ticketID = -1;	
+								}
+							}catch(Exception e){
+								ticketID = -1;
+							}
+						}while(ticketID<=0);
+
+						if(foundTicket!=null) {
+							System.out.println("Ticket found");
+							selectedScreening.getSeatLayout().cancel(foundTicket);
+						}else {
+							System.out.println("Ticket not found");
+						}
+						mrs.generateReservationsCSV();
+						break;
+					case 3:
+						returnCinema=false;
+						break;
+				}
+	}
 }
