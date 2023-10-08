@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +26,7 @@ public class MovieReservationSystem {
 	public HashMap<String, Screening> screenings;
 
 	public static void main(String[] args) {	
-		String showingDateInput=null, MovieID = null;
+		String showingDateInput=null, MovieID = null, confirm = null;
 		int inputValue = 0, ticketID=0, showingDateIndex=0, dateCtr=1, cinemaNumber = 0;
 		LocalDate dateSelected=null;
 		Ticket foundTicket=null;
@@ -192,10 +193,28 @@ public class MovieReservationSystem {
 						}
 					}
 					if(foundTicket!=null && scr!=null) {
-						System.out.println("Ticket found");
-						scr.getSeatLayout().cancel(foundTicket);
-						mrs.generateReservationsCSV();
-					}else {
+						DecimalFormat df = new DecimalFormat("0.##");
+
+						System.out.print("\nConfirm cancellation of this ticket: ("+foundTicket.getReservedSeats().size()+" seat"+(foundTicket.getReservedSeats().size()>1?"s":""));
+						if(foundTicket.getSeniors()>0) {
+							System.out.print(" with "+foundTicket.getSeniors()+ " senior"+(foundTicket.getSeniors()>1?"s":""));
+						}
+						System.out.println(")");
+						
+						System.out.println("Total price: PHP"+df.format(foundTicket.getTotalPrice()));
+						System.out.print("Input (Yes or No): ");
+						confirm = scan.nextLine();
+						if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
+							//scan.close();
+							break;
+						}
+						if(confirm.equalsIgnoreCase("Yes")){
+							scr.getSeatLayout().cancel(foundTicket);
+							mrs.generateReservationsCSV();
+						}else{
+							System.out.println("Ticket "+ticketID+" was not cancelled");
+						}
+					}else{
 						System.out.println("Ticket not found");
 					}
 					break;
