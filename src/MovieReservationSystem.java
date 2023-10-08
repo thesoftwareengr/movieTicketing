@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -124,7 +125,6 @@ public class MovieReservationSystem {
 							}else if(mrs.screenings.containsKey(MovieID+dateSelected)) {
 								break; //break user input: movieID
 							} else {
-								System.out.println("moc "+MovieID);
 								System.out.println("\n!!Invalid MovieID! Please Input a valid MovieID within the Cinemas!!");
 							}
 						}
@@ -142,10 +142,13 @@ public class MovieReservationSystem {
 						if(ticket!=null) {
 							selectedScreening.getSoldTickets().add(ticket);
 							mrs.generateReservationsCSV();
+						}else if(selectedScreening.getSeatLayout().getAvailableSeats()==0){
+							System.out.println("\nVery sorry, there are no available seats left.");
 						}
+
 						while(true) { // user input: reserve again
 							try {
-								System.out.println("Please Input \"1\" or \"2\" to Proceed back to Cinema "+MovieID.charAt(0)+" or the Main Menu"
+								System.out.println("\nPlease Input \"1\" or \"2\" to Proceed back to Cinema "+MovieID.charAt(0)+" or the Main Menu"
 										+ "\n[1] - CINEMA " + MovieID.charAt(0)
 										+ "\n[2] - Exit");
 								System.out.print("Input: ");
@@ -299,54 +302,63 @@ public class MovieReservationSystem {
 		String[] values;
 		ArrayList<String> csvData, seats;
 		int ctr=0, tot=0;
-		try (BufferedReader br = new BufferedReader(new FileReader("reservations.csv"))) {
-			while ((line = br.readLine()) != null) {
-				csvData = new ArrayList<String>();
-				seats = new ArrayList<String>();
-				
-				// CSV indexes
-				// 0 - ticketNum	1 - date
-				// 2 - cinemaNum	3 - start time
-				// 4 - seats (dynamic length)	
-				// 5 - price		6 - isActive
+		File file = new File("reservations.csv");
 
-				values = line.split(",");
+		if (!file.exists()) {
+			System.out.println("File not found: reservations.csv, no data to import");
+			return; // Exit the method if the file doesn't exist
+		}else{
+			try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+				while ((line = br.readLine()) != null) {
+					csvData = new ArrayList<String>();
+					seats = new ArrayList<String>();
+					
+					// CSV indexes
+					// 0 - ticketNum	1 - date
+					// 2 - cinemaNum	3 - start time
+					// 4 - seats (dynamic length)	
+					// 5 - price		6 - isActive
 
-				csvData.add(values[0]);
-				csvData.add(values[2]);
-				csvData.add(values[3]);
-				csvData.add(values[values.length-2]);
-				csvData.add(values[values.length-1]);
-				
-				for (int i = 4; i < values.length-2; i++) {
-					seats.add(values[i].substring(1,3));
-				}
-				for (int i =0 ; i < csvData.size(); i++) {
-					String string = csvData.get(i);
-					csvData.set(i, string.substring(1, string.length() - 1));
-				}
+					values = line.split(",");
 
-				LocalDate dateOfShowing = LocalDate.parse(values[1].substring(1, values[1].length()-1), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				Screening scr;
-				Ticket ticket;
-				Set<String> keys = screenings.keySet();
-				for(String k: keys){
-					scr = screenings.get(k);
-					if(scr.getMovieShowing().getShowingDate().equals(dateOfShowing) && scr.getCinemaNum()==Integer.parseInt(csvData.get(1)) && scr.getStartTime().equals(LocalTime.parse(csvData.get(2), DateTimeFormatter.ofPattern("HH:mm")))){
-						ticket = new Ticket(csvData, seats, scr.getMovieShowing());
-						scr.getSoldTickets().add(ticket);
-						scr.getSeatLayout().setAvailableSeats(scr.getSeatLayout().getAvailableSeats()-seats.size());
-						for(String seat:seats){
-							scr.getSeatLayout().setSeat((int) seat.charAt(0) -'A',seat.charAt(1) - '0'-1,true);
-						}
-						ctr++;
+					csvData.add(values[0]);
+					csvData.add(values[2]);
+					csvData.add(values[3]);
+					csvData.add(values[values.length-2]);
+					csvData.add(values[values.length-1]);
+					
+					for (int i = 4; i < values.length-2; i++) {
+						seats.add(values[i].substring(1,3));
 					}
+					for (int i =0 ; i < csvData.size(); i++) {
+						String string = csvData.get(i);
+						csvData.set(i, string.substring(1, string.length() - 1));
+					}
+
+					LocalDate dateOfShowing = LocalDate.parse(values[1].substring(1, values[1].length()-1), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					Screening scr;
+					Ticket ticket;
+					Set<String> keys = screenings.keySet();
+					for(String k: keys){
+						scr = screenings.get(k);
+						if(scr.getMovieShowing().getShowingDate().equals(dateOfShowing) && scr.getCinemaNum()==Integer.parseInt(csvData.get(1)) && scr.getStartTime().equals(LocalTime.parse(csvData.get(2), DateTimeFormatter.ofPattern("HH:mm")))){
+							ticket = new Ticket(csvData, seats, scr.getMovieShowing());
+							scr.getSoldTickets().add(ticket);
+							if(ticket.isActive()){
+								scr.getSeatLayout().setAvailableSeats(scr.getSeatLayout().getAvailableSeats()-seats.size());
+								for(String seat:seats){
+									scr.getSeatLayout().setSeat((int) seat.charAt(0) -'A',seat.charAt(1) - '0'-1,true);
+								}
+								ctr++;
+							}
+						}
+					}
+					tot++;
 				}
-				tot++;
+				System.out.println("Imported ["+ctr+"/"+tot+"] tickets");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			System.out.println("Imported ["+ctr+"/"+tot+"] tickets");
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -375,7 +387,7 @@ public class MovieReservationSystem {
 		}
 	}
 }
-//
+
 //	public void dateSectionMenu(){
 //		String showingDateInput=null;
 //		int showingDateIndex=0;

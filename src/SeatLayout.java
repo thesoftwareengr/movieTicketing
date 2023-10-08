@@ -47,7 +47,6 @@ public class SeatLayout {
 			for(String inputs:inputedStrings) {
 				inputValidation(errors, inputs,reservations);
 			}
-			// System.out.println(errors[0].size() + " , " + errors[1].size() +" , "+reservations.size());
 			while(!(errors[0].isEmpty() && errors[1].isEmpty())) {
 				if(!errors[0].isEmpty()) {
 					inputCorrection(errors, 0,reservations);
@@ -130,15 +129,13 @@ public class SeatLayout {
 	}
 	
 	public void inputCorrection(ArrayList<String>[] errors, int index, ArrayList<String> reservations){
-		String selection, correctSeat;
+		String selection=null, correctSeat;
 		Scanner scan = new Scanner(System.in);
 
 		Iterator<String> iterator = errors[index].iterator();
         while (iterator.hasNext()) {
-        	selection=null;
         	String error = iterator.next();
         	
-			System.out.println(error);
 			while(true) {
 				System.out.println("\nWould you like to correct or cancel this seat? ("+error+")");
 				System.out.print("Input (Correct or cancel): ");
@@ -171,7 +168,7 @@ public class SeatLayout {
 				availableSeats++;
 			}
 			ticket.setActive(false);
-			System.out.println("Ticket "+ticket.getTicketNum()+" is now inactive.");
+			System.out.printf("Ticket %08d is now inactive.", ticket.getTicketNum());
 		}
 	}
 
