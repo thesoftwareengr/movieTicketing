@@ -39,7 +39,7 @@ public class SeatLayout {
 			return null;
 			
 		}else {
-			System.out.println("\nPlease input seats to be reserved for this transaction:");
+			System.out.println("\nPlease input seats to be reserved for this transaction: (CANCEL to cancel)");
 			System.out.print("Input: ");
 			
 			str = scan.nextLine();
@@ -66,14 +66,14 @@ public class SeatLayout {
 				while(true) {
 					System.out.print("\nPlease input the number of seniors: ");
 					if(scan.hasNextInt()) {
-						seniors = scan.nextInt();
-						scan.nextLine();
+						seniors = Integer.valueOf(scan.nextLine());
 						if(seniors<=reservations.size()) {
 							break;
 						}else {
 							System.out.println("Invalid Integer Value! Exceeds maximum value");
 						}
 					}else {
+						scan.nextLine();
 						System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
 					}
 				}
@@ -137,7 +137,7 @@ public class SeatLayout {
         	String error = iterator.next();
         	
 			while(true) {
-				System.out.println("\nWould you like to correct or cancel this seat? ("+error+")");
+				System.out.println("\nThis seat ["+error+"] is "+(index==0?"incorrectly formatted":"reserved for someone else")+".\nWould you like to correct or cancel this seat?");
 				System.out.print("Input (Correct or cancel): ");
 				selection = scan.nextLine();
 				if(selection.equalsIgnoreCase("correct")) {
