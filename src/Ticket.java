@@ -131,10 +131,11 @@ public class Ticket {
 	}
 
 	public void display() {
-		System.out.println("********************************************************************************");
-		System.out.println("\nTicket Receipt for "+this.getMovie().getName()+"@ "+this.getShowingTime()+" - "+Screening.endTimeCalc(getShowingTime(), getMovie().getLength())+"\nPremier: "+this.getMovie().getIsPremier()+"\nSeat Numbers:");
 		int snr = this.getSeniors();
 		int price=350;
+		
+		System.out.println("********************************************************************************");
+		System.out.println("\nTicket Receipt for "+this.getMovie().getName()+"@ "+this.getShowingTime()+" - "+Screening.endTimeCalc(getShowingTime(), getMovie().getLength())+"\nPremier: "+this.getMovie().getIsPremier()+"\nSeat Numbers:");
 		for(String i: this.getReservedSeats()) {
 			if(snr>0) {
 				System.out.printf("%6s\t350PHP\t%10s\t280PHP\n", i, "20%%(70PHP)");
