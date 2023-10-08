@@ -87,7 +87,7 @@ public class SeatLayout {
 			while(true) {
 				DecimalFormat df = new DecimalFormat("0.##");
 
-				System.out.print("\nConfirm this ticket: ("+reservations.size()+" seat"+(reservations.size()>1?"s":""));
+				System.out.print("\nConfirm this reservation: ("+reservations.size()+" seat"+(reservations.size()>1?"s":""));
 				if(seniors>0) {
 					System.out.print(" with "+seniors+ " senior"+(seniors>1?"s":""));
 				}
