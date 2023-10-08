@@ -38,9 +38,9 @@ public class MovieReservationSystem {
 		mrs.readGeneratedCSVs();
 
 		SortedSet<Entry<String, Screening>> sortedEntries = mrs.screenings.entrySet()
-				.stream()
-				.sorted(Map.Entry.comparingByKey())
-				.collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Entry::getKey))));
+			.stream()
+			.sorted(Map.Entry.comparingByKey())
+			.collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Entry::getKey))));
 
 		while(true){ //main program loop
 			System.out.println("\n                         ********** MAIN MENU **********");		
@@ -71,32 +71,31 @@ public class MovieReservationSystem {
 				case 1: //reservation
 					while(true){ // loop for multiple reservations
 						while(true){ //user input: date
-							System.out.println("\nPlease select date of showing (EXIT to exit the application)");
+							System.out.println("\nPlease select date of showing from the following dates: (EXIT to exit the application)");
 							Iterator<LocalDate> iterator = mrs.showingDates.iterator();
-							dateCtr=1;
+							// dateCtr=1;
 							while(iterator.hasNext()){
-								System.out.println("["+dateCtr+"] "+iterator.next());
-								dateCtr++;
+								// System.out.println("["+dateCtr+"] "+iterator.next());
+								System.out.println(iterator.next());
+								// dateCtr++;
 							}
-							System.out.print("Input: ");
+							System.out.print("Input (yyyy-MM-dd): ");
 							showingDateInput = scan.nextLine();
 							if(showingDateInput.equalsIgnoreCase("EXIT")) {
 								break; //user input: date
 							}else{
 								try{
-									showingDateIndex = Integer.parseInt(showingDateInput);
-									if(showingDateIndex<=mrs.showingDates.size()) {
-										showingDateIndex--;
-										dateSelected = mrs.showingDates.get(showingDateIndex);
-										System.out.println("Date ["+dateSelected+"] has been selected");
-										break; //break user input: date
-									}else {
-										System.out.println("Invalid Integer Value! Exceeds maximum value");
+									dateSelected = LocalDate.parse(showingDateInput);
+									if(dateSelected!=null &&  mrs.showingDates.contains(dateSelected)){
+										break; // breakuser input: date
+									}else{
+										System.out.println("Selected Date has no available screenings");
 									}
 								}catch(Exception e) {
-									System.out.println("Invalid InputValue! Please Input a Valid Integer to Proceed");
+									System.out.println("Invalid InputValue! Please Input a Valid Date to Proceed");
 								}
 							}
+							
 						}
 						if(showingDateInput.equalsIgnoreCase("EXIT")) {
 								break; // break loop for multiple reservations
@@ -356,9 +355,6 @@ public class MovieReservationSystem {
 			e.printStackTrace();
 		}
 	}
-
-
-
 
 
 	public void dateSectionMenu(){
