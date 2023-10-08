@@ -131,7 +131,13 @@ public class MovieReservationSystem {
 						if(MovieID.equalsIgnoreCase("QUIT")){
 							break; //break loop for multiple reservations
 						}
-						selectedScreening = mrs.screenings.get(MovieID);
+						selectedScreening = mrs.screenings.get(MovieID+dateSelected);
+
+						System.out.println("\nCINEMA " + MovieID.charAt(0));
+						System.out.println("Seat Layout for "+selectedScreening.getMovieShowing().getName() + " @ " + selectedScreening.getStartTime() + " - " + Screening.endTimeCalc(selectedScreening.getStartTime(), selectedScreening.getMovieShowing().getLength()));
+						System.out.println("Premier: " + (selectedScreening.getMovieShowing().getIsPremier()? "Yes":"No"));
+						selectedScreening.getSeatLayout().display();
+
 						Ticket ticket = selectedScreening.getSeatLayout().reserve(selectedScreening);
 						if(ticket!=null) {
 							selectedScreening.getSoldTickets().add(ticket);
