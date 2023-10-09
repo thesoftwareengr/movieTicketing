@@ -45,6 +45,7 @@ public class MovieReservationSystem {
 				.collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Entry::getKey))));
 
 		while(true){ //main program loop
+			cancel=false;
 			System.out.println("\n                         ********** MAIN MENU **********");		
 
 			while(true){  // user input: reserve or cancel 
@@ -221,10 +222,10 @@ public class MovieReservationSystem {
 					if(confirm.equalsIgnoreCase("Yes")){
 						scr.getSeatLayout().cancel(foundTicket);
 						mrs.generateReservationsCSV();
-					}else{
+					}else {
 						System.out.println("Ticket "+ticketID+" was not cancelled");
 					}
-				}else{
+				}else if(Ticket.getReferenceTicketNumber()>1){
 					System.out.println("Ticket not found");
 				}
 				break;
