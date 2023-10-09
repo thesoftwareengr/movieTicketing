@@ -86,7 +86,6 @@ public class SeatLayout {
 			}else {
 				price = reservations.size()*500;
 			}
-			Ticket ticket = new Ticket(screening.getMovieShowing(), screening.getStartTime(), reservations, price, screening.getCinemaNum(), seniors);
 			
 			String confirm;
 			while(true) {
@@ -97,7 +96,7 @@ public class SeatLayout {
 					System.out.print(" with "+seniors+ " senior"+(seniors>1?"s":""));
 				}
 				System.out.println(")");
-				System.out.println("Total price: PHP"+df.format(ticket.getTotalPrice()));
+				System.out.println("Total price: PHP"+df.format(price));
 				System.out.print("Input (Yes or No): ");
 				confirm = scan.nextLine();
 				if(confirm.equalsIgnoreCase("Yes") || confirm.equalsIgnoreCase("No")){
@@ -106,6 +105,7 @@ public class SeatLayout {
 				}
 			}
 			if(confirm.equalsIgnoreCase("Yes")){
+				Ticket ticket = new Ticket(screening.getMovieShowing(), screening.getStartTime(), reservations, price, screening.getCinemaNum(), seniors);
 				System.out.println("\nYour ticket number is: "+ticket.getTicketNum()+"\n");
 				for(String i: reservations) {
 					seats[(int) i.charAt(0) -'A'][i.charAt(1) - '0'-1]=true;
