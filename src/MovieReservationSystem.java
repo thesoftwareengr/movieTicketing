@@ -346,8 +346,8 @@ public class MovieReservationSystem {
 								for(String seat:seats){
 									scr.getSeatLayout().setSeat((int) seat.charAt(0) -'A',seat.charAt(1) - '0'-1,true);
 								}
-								ctr++;
 							}
+							ctr++;
 						}
 					}
 					tot++;
