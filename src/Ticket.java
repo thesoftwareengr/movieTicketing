@@ -27,8 +27,6 @@ public class Ticket {
 		this.seniors = seniors;
 		this.movie = movie;
 		referenceTicketNumber++;
-		
-		System.out.println(ticketNum+"nxtTktNum "+referenceTicketNumber);
 	}
 
 	public Ticket(ArrayList<String> csvData, ArrayList<String> reservedSeats, Movie movie) {
@@ -52,8 +50,6 @@ public class Ticket {
 		}else{
 			seniors = (int) ((totalPrice - (reservedSeats.size() * 350)) / ((-0.2) * 350));
 		}
-		
-		System.out.println(ticketNum+"nxtTktNum "+referenceTicketNumber);
 	}
 
 	public Movie getMovie() {
