@@ -164,7 +164,7 @@ public class MovieReservationSystem {
 						}
 					}
 					if(inputValue==2){
-						break; //break loop for reservation loop?
+						break; //break loop for reservation loop
 					}
 				}
 				break;
@@ -220,6 +220,9 @@ public class MovieReservationSystem {
 					System.out.println("Ticket not found");
 				}
 				break;
+			}
+			if(inputValue==2 && foundTicket!=null){
+				break; //break loop for reservation loop
 			}
 		}
 		scan.close();
