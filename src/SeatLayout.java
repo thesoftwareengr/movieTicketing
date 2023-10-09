@@ -56,7 +56,7 @@ public class SeatLayout {
 			}
 			if(reservations.size()<=0) {
 				//no seats were added
-				System.out.println("------- error message here");
+				System.out.println("\nThere are no available seats");
 				//scan.close();
 				return null;	
 			}
@@ -147,7 +147,7 @@ public class SeatLayout {
 					iterator.remove();
 					break;
 				}else if(selection.equalsIgnoreCase("cancel")) {
-					System.out.println("---cancel transaction error message");
+					System.out.println("Seat ["+error+"] has been removed from list of selected seats.");
 					iterator.remove();
 					break;
 				}
@@ -158,7 +158,7 @@ public class SeatLayout {
 	
 	public void cancel(Ticket ticket){
 		if(!ticket.isActive()){
-			System.out.println("--------- ticket is already inactive");
+			System.out.printf("Ticket %08d was already cancelled.\n", ticket.getTicketNum());
 		}else {
 			Iterator<String> iterator = ticket.getReservedSeats().iterator();
 			while(iterator.hasNext()){
@@ -168,7 +168,7 @@ public class SeatLayout {
 				availableSeats++;
 			}
 			ticket.setActive(false);
-			System.out.printf("Ticket %08d is now inactive.", ticket.getTicketNum());
+			System.out.printf("Ticket %08d is now cancelled.\n", ticket.getTicketNum());
 		}
 	}
 
