@@ -230,9 +230,9 @@ public class MovieReservationSystem {
 				}
 				break;
 			}
-			if(inputValue==2 && cancel==false){
-				break; //break loop for reservation loop
-			}
+//			if(inputValue==2 && cancel==false){
+//				break; //break loop for reservation loop
+//			}
 		}
 		scan.close();
 		System.out.println("                   ********** Application End **********");	

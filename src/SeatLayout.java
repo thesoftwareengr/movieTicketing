@@ -137,27 +137,50 @@ public class SeatLayout {
 		String selection=null, correctSeat;
 		Scanner scan = new Scanner(System.in);
 
-		Iterator<String> iterator = errors[index].iterator();
-        while (iterator.hasNext()) {
-        	String error = iterator.next();
-        	
-			while(true) {
-				System.out.println("\nThis seat ["+error+"] is "+(index==0?"incorrectly formatted":"reserved for someone else")+".\nWould you like to correct or cancel this seat?");
-				System.out.print("Input (Correct or cancel): ");
-				selection = scan.nextLine();
-				if(selection.equalsIgnoreCase("correct")) {
-					System.out.print("Enter the correct seat: ");
-					correctSeat=scan.nextLine();
-					inputValidation(errors, correctSeat, reservations);
-					iterator.remove();
-					break;
-				}else if(selection.equalsIgnoreCase("cancel")) {
-					System.out.println("Seat ["+error+"] has been removed from list of selected seats.");
-					iterator.remove();
-					break;
-				}
-			}
-		}
+		ArrayList<String> errorList = errors[index];
+
+	    if (errorList.size() == 1) {
+	        // Handle the single-element case here
+	        String error = errorList.get(0);
+	        System.out.println("\nThis seat [" + error + "] is " + (index == 0 ? "incorrectly formatted" : "reserved for someone else") + ".");
+	        System.out.println("There's only one error. Would you like to correct or cancel this seat?");
+	        System.out.print("Input (Correct or cancel): ");
+	        selection = scan.nextLine();
+
+	        if (selection.equalsIgnoreCase("correct")) {
+	            System.out.print("Enter the correct seat: ");
+	            correctSeat = scan.nextLine();
+	            inputValidation(errors, correctSeat, reservations);
+	            errorList.clear(); // Remove the single element
+	        } else if (selection.equalsIgnoreCase("cancel")) {
+	            System.out.println("Seat [" + error + "] has been removed from the list of selected seats.");
+	            errorList.clear(); // Remove the single element
+	        }
+	    } else {
+	        // Handle the case with multiple elements using your existing code
+	        Iterator<String> iterator = errorList.iterator();
+	        while (iterator.hasNext()) {
+	            String error = iterator.next();
+
+	            while (true) {
+	                System.out.println("\nThis seat [" + error + "] is " + (index == 0 ? "incorrectly formatted" : "reserved for someone else") + ".\nWould you like to correct or cancel this seat?");
+	                System.out.print("Input (Correct or cancel): ");
+	                selection = scan.nextLine();
+
+	                if (selection.equalsIgnoreCase("correct")) {
+	                    System.out.print("Enter the correct seat: ");
+	                    correctSeat = scan.nextLine();
+	                    inputValidation(errors, correctSeat, reservations);
+	                    iterator.remove();
+	                    break;
+	                } else if (selection.equalsIgnoreCase("cancel")) {
+	                    System.out.println("Seat [" + error + "] has been removed from the list of selected seats.");
+	                    iterator.remove();
+	                    break;
+	                }
+	            }
+	        }
+	    }
 		//scan.close();
 	}
 	
