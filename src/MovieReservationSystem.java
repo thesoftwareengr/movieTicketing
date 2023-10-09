@@ -30,6 +30,7 @@ public class MovieReservationSystem {
 		int inputValue = 0, ticketID=0, cinemaNumber = 0;
 		LocalDate dateSelected=null;
 		Ticket foundTicket=null;
+		Boolean cancel=false;
 
 		Screening selectedScreening =null;
 
@@ -168,10 +169,15 @@ public class MovieReservationSystem {
 					}
 				}
 				break;
-			case 2: //cancel.
+			case 2: //cancel
+				cancel=true;
 				foundTicket=null;
 				Screening scr=null;
 				while(true) { // user input: ticket number
+					if(Ticket.getReferenceTicketNumber()==1) {
+						System.out.println("No tickets have been sold yet.");
+						break; //user input: ticket number
+					}
 					try {
 						System.out.println("Please input ticket number to be cancelled");
 						System.out.print("Input: ");
@@ -196,6 +202,8 @@ public class MovieReservationSystem {
 					}
 					if(foundTicket!=null) {
 						break; //break user input: ticket number
+					}else {
+						System.out.println("Ticket not found");
 					}
 				}
 				if(foundTicket!=null && scr!=null) {
@@ -221,7 +229,7 @@ public class MovieReservationSystem {
 				}
 				break;
 			}
-			if(inputValue==2 && foundTicket!=null){
+			if(inputValue==2 && cancel==false){
 				break; //break loop for reservation loop
 			}
 		}
