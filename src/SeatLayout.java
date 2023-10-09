@@ -36,6 +36,7 @@ public class SeatLayout {
 		errors[1] = new ArrayList<String>();
 		
 		if(this.availableSeats<=0) {
+			System.out.println("\nThere are no available seats");
 			return null;
 			
 		}else {
@@ -43,6 +44,10 @@ public class SeatLayout {
 			System.out.print("Input: ");
 			
 			str = scan.nextLine();
+			if(str.equalsIgnoreCase("cancel")) {
+				System.out.println("Reservation has been cancelled");
+				return null;
+			}
 			String[] inputedStrings = str.split(",");
 			for(String inputs:inputedStrings) {
 				inputValidation(errors, inputs,reservations);
@@ -56,7 +61,7 @@ public class SeatLayout {
 			}
 			if(reservations.size()<=0) {
 				//no seats were added
-				System.out.println("\nThere are no available seats");
+				System.out.println("\nNo seats were added");
 				//scan.close();
 				return null;	
 			}
