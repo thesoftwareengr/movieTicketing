@@ -180,10 +180,12 @@ public class MovieReservationSystem {
 						break; //user input: ticket number
 					}
 					try {
-						System.out.println("Please input ticket number to be cancelled");
+						System.out.println("Please input ticket number to be cancelled (0 (zero) to exit)");
 						System.out.print("Input: ");
 						ticketID = Integer.parseInt(scan.nextLine());
-
+						if(ticketID==0) {
+							break; //user input: ticket number
+						}
 						Set<String> keys = mrs.screenings.keySet();
 						for(String k: keys){
 							scr = mrs.screenings.get(k);
@@ -204,7 +206,7 @@ public class MovieReservationSystem {
 					if(foundTicket!=null) {
 						break; //break user input: ticket number
 					}else {
-						System.out.println("Ticket not found");
+						System.out.println("Ticket not found "+ticketID);
 					}
 				}
 				if(foundTicket!=null && scr!=null) {
@@ -225,6 +227,8 @@ public class MovieReservationSystem {
 					}else {
 						System.out.println("Ticket "+ticketID+" was not cancelled");
 					}
+				}else if(ticketID==0){
+					System.out.println("No ticket will be cancelled.");
 				}else if(Ticket.getReferenceTicketNumber()>1){
 					System.out.println("Ticket not found");
 				}
@@ -389,10 +393,10 @@ public class MovieReservationSystem {
 				}
 			}
 			bufferedWriter.close();
-			System.out.println("CSV file created successfully.");
+			System.out.println("System updated successfully.");
 
 		} catch (Exception e) {
-			System.out.println("Error occurred while writing to the CSV file.");
+			System.out.println("Error occurred while updating system.");
 			e.printStackTrace();
 		}
 	}

@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class SeatLayout {
-	final int ROWS = 8, COLS = 5;
+	private static final int ROWS = 8, COLS = 5;
 	private boolean seats[][];
 	private int availableSeats;
 
